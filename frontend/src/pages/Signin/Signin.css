@@ -1,0 +1,304 @@
+/* SignInPage.css */
+
+.signin-page-wrapper {
+    display: flex;
+    min-height: 100vh; /* Full viewport height */
+    background-color: #0B2545; /* Dark background for the whole page */
+    font-family: 'Inter', sans-serif; /* Using Inter font */
+}
+
+/* Left side: Background illustration */
+.signin-illustration-column {
+    flex: 1;
+    background-color: #1a3a60; /* A slightly lighter dark blue for the illustration background */
+    /* You would typically use a background-image here */
+    background-image: url('https://placehold.co/600x800/1a3a60/FFFFFF?text=Illustration'); /* Placeholder */
+    background-size: cover;
+    background-position: center;
+    display: flex; /* To center content if any */
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 20px 20px 0; /* Rounded right corners for the column */
+    overflow: hidden; /* Ensures content stays within rounded corners */
+}
+
+/* Right side: Form */
+.signin-form-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center content horizontally */
+    padding: 40px;
+    color: white;
+    max-width: 500px; /* Limit form column width on large screens */
+    margin: 0 auto; /* Center the form column within its flex space */
+}
+
+.user-type-toggle {
+    display: flex;
+    background-color: #294263; /* Darker background for toggle */
+    border-radius: 10px;
+    margin-bottom: 40px;
+    padding: 5px;
+}
+
+.toggle-button {
+    background-color: transparent;
+    border: none;
+    color: #ccc;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-button.active {
+    background-color: #007BFF; /* Accent blue for active button */
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+}
+
+.form-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: white;
+    text-align: center;
+}
+
+.form-subtitle {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.login-link {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.login-link:hover {
+    color: #0056b3;
+}
+
+.signin-form {
+    width: 100%;
+    max-width: 400px; /* Max width for the form itself */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] { /* Added tel type if needed */
+    background-color: #294263; /* Darker input background */
+    border: 1px solid #3d5a80; /* Subtle border */
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.password-group {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 60%; /* Adjust based on label height */
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #aaa;
+    font-size: 18px; /* For emoji, adjust as needed */
+}
+
+.checkbox-group {
+    flex-direction: row; /* Align checkbox and label horizontally */
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    background-color: #294263;
+    border: 1px solid #3d5a80;
+    border-radius: 4px;
+    cursor: pointer;
+    appearance: none; /* Hide default checkbox */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    background-color: #007BFF;
+    border-color: #007BFF;
+}
+
+.checkbox-group input[type="checkbox"]:checked::before {
+    content: '✓'; /* Checkmark for checked state */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+}
+
+.checkbox-group label {
+    margin-bottom: 0; /* Remove bottom margin for inline label */
+    font-size: 15px;
+    color: #ccc;
+}
+
+.terms-link {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.terms-link:hover {
+    color: #0056b3;
+}
+
+.create-account-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    margin-top: 10px;
+}
+
+.create-account-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+}
+
+.or-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #aaa;
+    margin: 20px 0;
+    font-size: 14px;
+}
+
+.or-separator::before,
+.or-separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #3d5a80;
+}
+
+.or-separator:not(:empty)::before {
+    margin-right: .5em;
+}
+
+.or-separator:not(:empty)::after {
+    margin-left: .5em;
+}
+
+.social-login-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.social-button {
+    flex: 1;
+    background-color: #294263;
+    color: white;
+    border: 1px solid #3d5a80;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.social-button.google-button:hover {
+    background-color: #DB4437; /* Google red */
+    border-color: #DB4437;
+}
+
+.social-button.facebook-button:hover {
+    background-color: #4267B2; /* Facebook blue */
+    border-color: #4267B2;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .signin-page-wrapper {
+        flex-direction: column;
+        min-height: auto; /* Allow height to adjust on smaller screens */
+    }
+
+    .signin-illustration-column {
+        min-height: 250px; /* Give illustration some height on mobile */
+        border-radius: 0; /* Remove rounded corners on mobile */
+    }
+
+    .signin-form-column {
+        padding: 30px 20px;
+        max-width: 100%; /* Allow form to take full width */
+    }
+
+    .form-title {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 576px) {
+    .signin-form-column {
+        padding: 20px 15px;
+    }
+
+    .form-title {
+        font-size: 28px;
+    }
+
+    .social-login-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

@@ -1,0 +1,214 @@
+/* About.css */
+
+.about {
+    padding: 80px 0;
+    background-color: #fff;
+}
+
+.about-content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Left Column: Image Display */
+.about-image-column {
+    flex: 1;
+    max-width: 500px;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-main-image {
+    /* --- MODIFIED: Ensure responsive height --- */
+    width: 100%; /* Allows it to shrink down on smaller screens */
+    max-width: 440px; /* The image won't get wider than this */
+    height: auto; /* --- MODIFIED: Let height scale with width --- */
+    max-height: 600px; /* --- ADDED: Set a max height without fixing it --- */
+    object-fit: contain;
+    /* --- END MODIFIED --- */
+    display: block;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    opacity: 0;
+    animation : fadeIn 0.5s forwards;
+
+    transition: box-shadow 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+.about-main-image:hover {
+    box-shadow: 0 0 40px rgba(0, 123, 255, 0.6), 0 10px 30px rgba(0, 0, 0, 0.1); 
+    transform: scale(1.02); 
+}
+
+/* Right Column: Heading, Intro Description, and Interactive Cards */
+.about-info-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.about-main-heading {
+    font-size: 48px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.about-intro-description {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.about-cards-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.about-card {
+    background-color: #f8f8f8;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.about-card:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.about-card.active {
+    background-color: #0B2545;
+    color: white;
+    box-shadow: 0 8px 25px rgba(11, 37, 69, 0.4);
+    transform: translateY(0);
+}
+
+.about-card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.about-card-icon {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0.6);
+    transition: filter 0.3s ease;
+}
+
+.about-card.active .about-card-icon {
+    filter: brightness(4) invert(1);
+}
+
+.about-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.about-card.active h3 {
+    color: white;
+}
+
+.about-card-description {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: color 0.3s ease;
+}
+
+.about-card.active .about-card-description {
+    color: #e0e0e0;
+}
+
+
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .about-content-wrapper {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .about-image-column {
+        min-width: auto;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .about-main-image {
+        max-height: 400px;
+        object-fit: contain;
+        width: 100%;
+        height: auto; /* --- MODIFIED: Ensure height scales correctly on mobile --- */
+    }
+
+    .about-main-heading {
+        font-size: 38px;
+        text-align: center;
+    }
+
+    .about-intro-description {
+        font-size: 16px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-section {
+        padding: 60px 0;
+    }
+
+    .about-main-heading {
+        font-size: 32px;
+    }
+
+    .about-card h3 {
+        font-size: 18px;
+    }
+
+    .about-card-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .about-card-description {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-content-wrapper {
+        padding: 0 15px;
+        gap: 20px;
+    }
+    .about-main-heading {
+        font-size: 28px;
+    }
+}
