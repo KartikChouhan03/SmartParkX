@@ -2,55 +2,60 @@
 
 .signin-page-wrapper {
     display: flex;
-    min-height: 100vh; /* Full viewport height */
-    background-color: #0B2545; /* Dark background for the whole page */
-    font-family: 'Inter', sans-serif; /* Using Inter font */
+    min-height: 100vh;
+    background-color: #0B2545;
+    font-family: 'Inter', sans-serif;
 }
 
 /* Left side: Background illustration */
 .signin-illustration-column {
-    flex: 1;
-    background-color: #1a3a60; /* A slightly lighter dark blue for the illustration background */
-    /* You would typically use a background-image here */
-    background-image: url('https://placehold.co/600x800/1a3a60/FFFFFF?text=Illustration'); /* Placeholder */
+    flex: 0 0 50%; /* Adjusted to take half the space */
+    background-color: #1a3a60;
+    background-image: url('https://placehold.co/600x800/1a3a60/FFFFFF?text=Illustration');
     background-size: cover;
     background-position: center;
-    display: flex; /* To center content if any */
+    display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0 20px 20px 0; /* Rounded right corners for the column */
-    overflow: hidden; /* Ensures content stays within rounded corners */
+    border-radius: 0 20px 20px 0;
+    overflow: hidden;
+    min-height: 300px;
+}
+
+.signin-illustration-column img {
+    width: 100%; /* Ensure the image takes full width */
+    height: auto; /* Maintain aspect ratio */
 }
 
 /* Right side: Form */
 .signin-form-column {
-    flex: 1;
+    flex: 0 0 50%; /* Adjusted to take half the space */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* Center content horizontally */
-    padding: 40px;
+    align-items: center;
+    padding: 24px 12px;
     color: white;
-    max-width: 500px; /* Limit form column width on large screens */
-    margin: 0 auto; /* Center the form column within its flex space */
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .user-type-toggle {
     display: flex;
-    background-color: #294263; /* Darker background for toggle */
+    background-color: #294263;
     border-radius: 10px;
-    margin-bottom: 40px;
-    padding: 5px;
+    margin-bottom: 24px;
+    padding: 3px;
 }
 
 .toggle-button {
     background-color: transparent;
     border: none;
     color: #ccc;
-    padding: 10px 25px;
+    padding: 7px 16px;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     transition: background-color 0.3s, color 0.3s;
 }
@@ -62,17 +67,17 @@
 }
 
 .form-title {
-    font-size: 36px;
+    font-size: 26px;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     color: white;
     text-align: center;
 }
 
 .form-subtitle {
-    font-size: 16px;
+    font-size: 14px;
     color: #ccc;
-    margin-bottom: 30px;
+    margin-bottom: 18px;
     text-align: center;
 }
 
@@ -89,33 +94,34 @@
 
 .signin-form {
     width: 100%;
-    max-width: 400px; /* Max width for the form itself */
+    max-width: 320px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
+    gap: 2px;
 }
 
 label {
-    font-size: 14px;
+    font-size: 13px;
     color: #ccc;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"],
-input[type="tel"] { /* Added tel type if needed */
-    background-color: #294263; /* Darker input background */
-    border: 1px solid #3d5a80; /* Subtle border */
+input[type="tel"] {
+    background-color: #294263;
+    border: 1px solid #3d5a80;
     border-radius: 8px;
-    padding: 12px 15px;
+    padding: 9px 12px;
     color: white;
-    font-size: 16px;
+    font-size: 15px;
     outline: none;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
@@ -135,12 +141,12 @@ input:focus {
 
 .password-toggle {
     position: absolute;
-    right: 15px;
-    top: 60%; /* Adjust based on label height */
+    right: 10px;
+    top: 55%;
     transform: translateY(-50%);
     cursor: pointer;
     color: #aaa;
-    font-size: 18px; /* For emoji, adjust as needed */
+    font-size: 16px;
 }
 
 .checkbox-group {
@@ -178,8 +184,8 @@ input:focus {
 }
 
 .checkbox-group label {
-    margin-bottom: 0; /* Remove bottom margin for inline label */
-    font-size: 15px;
+    margin-bottom: 0;
+    font-size: 13px;
     color: #ccc;
 }
 
@@ -199,12 +205,12 @@ input:focus {
     color: white;
     border: none;
     border-radius: 8px;
-    padding: 15px 20px;
-    font-size: 18px;
+    padding: 10px 0;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s, box-shadow 0.3s;
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 .create-account-btn:hover {
@@ -217,8 +223,8 @@ input:focus {
     align-items: center;
     text-align: center;
     color: #aaa;
-    margin: 20px 0;
-    font-size: 14px;
+    margin: 12px 0;
+    font-size: 13px;
 }
 
 .or-separator::before,
@@ -238,7 +244,7 @@ input:focus {
 
 .social-login-buttons {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     justify-content: space-between;
 }
 
@@ -248,8 +254,8 @@ input:focus {
     color: white;
     border: 1px solid #3d5a80;
     border-radius: 8px;
-    padding: 12px 15px;
-    font-size: 16px;
+    padding: 8px 0;
+    font-size: 15px;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s, border-color 0.3s;
@@ -265,40 +271,37 @@ input:focus {
     border-color: #4267B2;
 }
 
-
 /* --- Responsive Adjustments --- */
+
 @media (max-width: 992px) {
     .signin-page-wrapper {
         flex-direction: column;
-        min-height: auto; /* Allow height to adjust on smaller screens */
+        min-height: auto;
     }
-
     .signin-illustration-column {
-        min-height: 250px; /* Give illustration some height on mobile */
-        border-radius: 0; /* Remove rounded corners on mobile */
+        flex: 0 0 auto;
+        min-height: 180px;
+        border-radius: 0;
     }
-
     .signin-form-column {
-        padding: 30px 20px;
-        max-width: 100%; /* Allow form to take full width */
+        flex: 0 0 auto;
+        padding: 18px 8px;
+        max-width: 100%;
     }
-
     .form-title {
-        font-size: 32px;
+        font-size: 22px;
     }
 }
 
 @media (max-width: 576px) {
     .signin-form-column {
-        padding: 20px 15px;
+        padding: 10px 4px;
     }
-
     .form-title {
-        font-size: 28px;
+        font-size: 18px;
     }
-
     .social-login-buttons {
         flex-direction: column;
-        gap: 10px;
+        gap: 7px;
     }
 }

@@ -4,19 +4,17 @@ import { assets } from '../../assets/assets.js';
 import {EyeClosed,Eye} from 'lucide-react'
 
 const SignInPage = () => {
-    const [userType, setUserType] = useState('user'); // 'user' or 'admin'
+    const [userType, setUserType] = useState('user'); 
     const [showPassword, setShowPassword] = useState(false);
 
     const handleToggleUserType = (type) => {
         setUserType(type);
-        // You might want to clear form fields or reset state when switching types
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // Handle form submission logic here
         console.log('Form submitted!');
-        // You'd typically send this data to an authentication service
     };
 
     return (
@@ -45,7 +43,7 @@ const SignInPage = () => {
 
                 <h2 className="form-title">Create an account</h2>
                 <p className="form-subtitle">
-                    Already have an account? <a href="#Login" className="login-link">Log in</a>
+                    Already have an account? <a href="/login" className="login-link">Log in</a>
                 </p>
 
                 <form className="signin-form" onSubmit={handleSubmit}>

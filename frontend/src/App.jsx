@@ -10,6 +10,7 @@ import ContactUs from './components/ContactUs/ContactUs.jsx'
 import Footer from './components/Footer/Footer.jsx'
 
 import Signin from './pages/Signin/Signin.jsx'
+import Login from './pages/Login/Login.jsx'
 
 const App = () => {
 
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/footer" element={<Footer/>} />
 
         <Route path="/signin" element={<Signin/>} />
+        <Route path="/login" element={<Login/>} />
 
       </Routes>
     </div>
