@@ -1,0 +1,133 @@
+/* Import Orbitron font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.navbar {
+  background-color: #0B2545; 
+  padding: 15px; /* Vertical padding only, no horizontal */
+  width: 100%;
+
+   /* --- ADDED FOR FIXED NAVBAR --- */
+    position: fixed; /* Makes the navbar stay in place on scroll */
+    top: 0;          /* Sticks it to the top of the viewport */
+    left: 0;         /* Aligns it to the left edge */
+    height: 80px;    /* Explicitly set height based on content + padding (50px logo + 15px top + 15px bottom) */
+    z-index: 1000;   /* Ensures it stays on top of other content */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: Adds a subtle shadow for visual separation */
+    /* --- END ADDED --- */
+}
+.navbar-container {
+  width: 90%; /* Leaves 8% margin on each side, just like your old padding */
+  margin: 0 auto; /* Centers the container */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 100%; /* --- ADDED: Make container take full height of fixed navbar for vertical centering --- */
+}
+
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none; /* Removes underline from link */
+}
+
+.navbar .logo {
+  width: 80px;
+  height: 78px;
+  border-radius: 50%;
+  padding: 20px;
+}
+
+.navbar p {
+  font-family: 'Orbitron', sans-serif;
+  color: white;
+  font-size: 20px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none; 
+  gap: 30px; 
+}
+
+/* NEW: Styles for the links inside the menu */
+.navbar-menu a {
+  color: white;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.navbar-menu a:hover {
+  color: #3498db; /* Adds a hover effect to links */
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+
+.navbar button {
+  background: #007BFF; 
+  font-size: 16px;
+  color: white;
+  border: none; 
+  padding: 12px 35px; 
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navbar button:hover {
+  background-color: #0056b3; 
+}
+
+.navbar .active{
+  padding-bottom: 2px;
+  border-bottom: 2px solid white;
+}
+
+.navbar .active:hover{
+  border-bottom: 3px solid #2980b9;
+}
+
+@media (max-width: 1050px) {
+  .navbar {
+    padding: 15px 4%;
+  }
+  .navbar-menu {
+    gap: 20px;
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 900px) {
+  .navbar .logo {
+    width: auto;
+    height: 75px;
+  }
+  .navbar p {
+    font-size: 18px;
+  }
+  .navbar-menu {
+    gap: 15px;
+    font-size: 16px;
+  }
+  .navbar-right button {
+    padding: 10px 28px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 810px) {
+  .navbar-menu {
+    display: none;
+  }
+}

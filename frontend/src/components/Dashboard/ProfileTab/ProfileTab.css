@@ -1,0 +1,52 @@
+.profile-container {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  width: 100%;
+}
+
+.profile-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 0.95rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.form-input {
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.profile-actions {
+  margin-top: 15px;
+}
+
+.save-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.save-btn:hover {
+  background-color: #1d4ed8;
+}

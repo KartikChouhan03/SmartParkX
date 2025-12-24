@@ -1,0 +1,198 @@
+/* ContactUs.css */
+
+.contact-us-section {
+    background-color: #f0f4f8; /* Light background color */
+    padding: 80px 0;
+    color: #333; /* Dark text color for the section */
+    font-family: 'Inter', sans-serif;
+}
+
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 60px; /* Space between the two columns */
+    align-items: flex-start;
+}
+
+/* Left Column: Contact Information */
+.contact-info-column {
+    flex: 1;
+}
+
+.contact-heading {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: #0B2545; /* Dark blue heading */
+}
+
+.contact-description {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    color: #555; /* Slightly darker text color */
+    max-width: 500px;
+}
+
+.contact-details-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns for contact info */
+    gap: 30px;
+}
+
+.contact-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.contact-icon {
+    background-color: rgba(0, 0, 0, 0.05); /* Light gray background for the icon circle */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #007BFF; /* Icon color remains the same accent blue */
+}
+
+.contact-text-content h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 5px;
+    color: #333; /* Dark text color */
+}
+
+.contact-text-content p {
+    font-size: 14px;
+    color: #555; /* Slightly darker text color */
+    margin: 0;
+}
+
+/* Right Column: Form */
+.contact-form-column {
+    flex: 1;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #fff; /* White background for the form itself */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Added a subtle shadow */
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    flex: none;
+    width: 100%;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #555; /* Dark text color */
+}
+
+input#email,input#name,input#phone, select, textarea {
+    background-color: rgba(0, 0, 0, 0.05); /* Light gray background for inputs */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: #333; /* Dark text color */
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #888; /* Darker placeholder text */
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #007BFF; /* Focus color remains the same */
+}
+
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 35px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.send-message-btn {
+    background-color: #006bdd;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.3s;
+}
+
+.send-message-btn:hover {
+    background-color: #0056b3;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .contact-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .contact-heading {
+        font-size: 38px;
+    }
+
+    .contact-form-column, .contact-info-column {
+        flex: none;
+        width: 100%;
+    }
+
+    .contact-details-wrapper {
+        grid-template-columns: 1fr; /* Single column on tablets */
+    }
+}
+
+@media (max-width: 576px) {
+    .contact-heading {
+        font-size: 32px;
+    }
+    
+    .contact-form .form-row {
+        flex-direction: column; /* Stack form inputs on mobile */
+        gap: 20px;
+    }
+
+    .contact-details-wrapper {
+        gap: 20px;
+    }
+}

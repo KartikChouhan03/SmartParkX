@@ -1,0 +1,159 @@
+
+.container{
+    width: 100%;
+    min-height: 100vh;
+    max-width: 210vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(135deg, #d7f4ff, #96b7d1, #d9ecf8);
+    
+}
+
+/* Card */
+.card {
+  background: #ffffff;
+  width: 800px;     
+  height: 500px;
+  width: 800px;
+  max-width: 90%;
+  display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+/* Form Panel */
+.form-panel {
+  flex: 1;
+  padding: 50px;
+  transition: transform 0.6s ease-in-out;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Overlay Panel */
+.overlay-panel {
+  flex: 1;
+  background: linear-gradient(135deg, #213695, #2e7482);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 50px;
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-panel h2 {
+  margin-bottom: 15px;
+  font-size: 32px;
+}
+
+.overlay-panel p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* Overlay Button */
+.button-overlay {
+  padding: 8px 22px;
+  border: none;
+  background: #fff;
+  color: #08519a;
+  font-weight: bold;
+  border-radius: 22px;
+  cursor: pointer;
+  transition: 0.4s ease;
+}
+
+.button-overlay:hover {
+  background: #f0f0f0;
+}
+
+/* Forms */
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #043565;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.social-button {
+  background: #e3e3e3;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.form-container p{
+    margin-top: 5px;
+    margin: 8px 4px;
+    font-size: 14px;
+    color: #666;
+}
+.form-container a{
+    color: #828282;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 5px;
+    position: relative;
+}
+.form-container a:hover {
+  text-decoration: underline;
+
+}
+
+.input {
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: block;
+}
+
+.login-button, .signup-button {
+  padding: 10px 25px 10px 25px;
+  background: #134883;
+  color: white;
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: 0.3s;
+  display: flex;
+
+}
+
+.login-button:hover, .signup-button:hover {
+  background: #062545;
+}
+
+/* Animation classes */
+.container.slide-right .form-panel {
+  transform: translateX(100%);
+}
+
+.container.slide-right .overlay-panel {
+  transform: translateX(-100%);
+}
+
+

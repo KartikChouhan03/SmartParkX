@@ -1,0 +1,21 @@
+.wallet-modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.wallet-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.wallet-add-btn {
+  background-color: #2563eb;
+  color: white;
+}
+
+.wallet-add-btn:hover {
+  background-color: #1d4ed8;
+}

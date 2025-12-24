@@ -1,0 +1,56 @@
+/* ===== Nav Bar Styling ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 250px; /* adjust if you have a sidebar */
+  right: 0;
+  height: 60px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 6px rgba(10, 42, 124, 0.412);
+  z-index: 1000;
+}
+
+/* ===== Left Section ===== */
+.nav-left h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.nav-left p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* ===== Right Section ===== */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.notification {
+  background: #f5f5f5;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification:hover {
+  background: #eaeaea;
+}
+
+.notification svg {
+  color: #333;
+}

@@ -1,5 +1,5 @@
 
-import logo from './logo.png'
+import logo from './LOGO.png'
 import hero from './hero.mp4'
 import about1 from './about1.svg'
 import about2 from './about2.svg'

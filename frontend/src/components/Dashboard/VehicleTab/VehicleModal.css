@@ -1,0 +1,33 @@
+.vehicle-modal {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.modal-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.save-vehicle {
+  background-color: #2563eb;
+  color: white;
+}
+
+.save-vehicle:hover {
+  background-color: #1d4ed8;
+}

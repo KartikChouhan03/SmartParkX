@@ -14,14 +14,6 @@
   scroll-behavior: smooth;
 }
 
-body{
-  min-height:100vh;
-}
-
-a{
-  text-decoration: none;
-  color: inherit;
-}
 
 .app{
 
@@ -37,3 +29,6 @@ a{
     opacity:1;
   }
 }
+
+
+

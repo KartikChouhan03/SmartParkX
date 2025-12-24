@@ -1,0 +1,18 @@
+.my-parking{
+  margin-left: 250px;   /* same as sidebar width */
+  padding: 80px 20px 20px 20px; /* top padding for navbar height */
+  min-height: 100vh;
+  background: #f9f9f9;
+}
+
+.heading {
+  margin-bottom: 5px;
+  color: #333;
+  align-items: center;
+  display: inline-block;
+  font-size: 24px;
+  font-weight: bold;
+  
+}
+
+

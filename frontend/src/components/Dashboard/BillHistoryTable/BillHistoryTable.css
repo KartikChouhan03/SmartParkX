@@ -1,0 +1,87 @@
+.bill-container {
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.bill-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 15px;
+}
+
+.bill-table-wrapper {
+  overflow-x: auto;
+}
+
+.bill-table {
+  width: 100%;
+}
+
+.bill-table th,
+.bill-table td {
+  padding: 12px 14px;
+  font-size: 0.95rem;
+}
+
+.bill-table th {
+  background-color: #f1f5f9;
+  color: #334155;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.bill-table tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.bill-status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.bill-status.paid {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+/* Action buttons */
+.bill-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.bill-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s ease;
+}
+
+.view-btn {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.view-btn:hover {
+  background-color: #bae6fd;
+}
+
+.download-btn {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.download-btn:hover {
+  background-color: #fde68a;
+}

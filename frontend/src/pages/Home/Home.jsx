@@ -1,25 +1,27 @@
-import React, { useState } from 'react'
-import './Home.css'
-import Header from '../../components/Header/Header'
-import About from '../../components/About/About'
-import Features from '../../components/Features/Features'
-import HowItWorks from '../../components/HowItWorks/HowItWorks'
-import ContactUs from '../../components/ContactUs/ContactUs'
-import Footer from '../../components/Footer/Footer'
-import Testimonial from '../../components/Testimonial/Testimonial'
+import React from 'react';
+import './Home.css';
+import Header from '../../components/Landing/Header/Header';
+import About from '../../components/Landing/About/About';
+import Features from '../../components/Landing/Features/Features';
+import HowItWorks from '../../components/Landing/HowItWorks/HowItWorks';
+import ContactUs from '../../components/Landing/ContactUs/ContactUs';
+import Footer from '../../components/Landing/Footer/Footer';
+import Testimonial from '../../components/Landing/Testimonial/Testimonial';
+import Navbar from '../../components/Landing/Navbar/Navbar';
 
 const Home = () => {
   return (
-    <div>
-      <Header/>
-      <About/>
-      <Features/>
-      <HowItWorks/>
-      <Testimonial/>
-      <ContactUs/>
-      <Footer/>
-    </div>
-  )
-}
+    <>
+      <Navbar />
+      <Header />
+      <About />
+      <Features />
+      <HowItWorks />
+      <Testimonial />
+      <ContactUs />
+      <Footer />
+    </>
+  );
+};
 
-export default Home
+export default Home;

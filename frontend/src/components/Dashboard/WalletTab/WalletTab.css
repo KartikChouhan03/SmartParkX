@@ -1,0 +1,89 @@
+.wallet-container {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.wallet-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.wallet-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1f5f9;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.wallet-label {
+  color: #64748b;
+}
+
+.wallet-amount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.add-money-btn {
+  background-color: #2563eb;
+  color: white;
+  border-radius: 8px;
+}
+
+.add-money-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.wallet-toggles {
+  margin: 25px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f4f8fb;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.wallet-history {
+  margin-top: 20px;
+}
+
+.wallet-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.wallet-table th {
+  background: #f1f5f9;
+  padding: 12px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.wallet-table td {
+  padding: 12px;
+}
+
+.tx-red {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.tx-green {
+  color: #15803d;
+  font-weight: 600;
+}
