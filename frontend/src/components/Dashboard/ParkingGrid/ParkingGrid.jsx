@@ -1,44 +1,48 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ParkingGrid.css";
-import {Timer} from 'lucide-react';
+import { Timer } from "lucide-react";
+import { useStore } from "../../../Context/StoreContext";
 
 const ParkingGrid = () => {
-  // Example slot data
-  const [slots] = useState([
-    { id: 1, occupied: true, time: "1h 20m" },
-    { id: 2, occupied: false, time: null },
-    { id: 3, occupied: true, time: "45m" },
-    { id: 4, occupied: false, time: null },
-    { id: 5, occupied: true, time: "2h 10m" },
-    { id: 6, occupied: false, time: null },
-    { id: 7, occupied: true, time: "30m" },
-    { id: 8, occupied: false, time: null },
-  ]);
+  const { slots, loading } = useStore();
+
+  if (loading) {
+    return <p>Loading parking slots...</p>;
+  }
 
   const total = slots.length;
-  const occupied = slots.filter((s) => s.occupied).length;
+  const occupied = slots.filter((s) => s.isOccupied).length;
   const unoccupied = total - occupied;
 
   return (
     <div className="parking-container">
-      <h2 className="parking-title">Parking Simulation</h2>
+      <h2 className="parking-title">SmartParkX Parking Status</h2>
 
       {/* Stats */}
       <div className="parking-stats">
         <span>Total Slots: {total}</span>
         <span className="occupied">Occupied: {occupied}</span>
-        <span className="free">Unoccupied: {unoccupied}</span>
+        <span className="free">Available: {unoccupied}</span>
       </div>
 
       {/* Grid */}
       <div className="parking-grid">
         {slots.map((slot) => (
           <div
-            key={slot.id}
-            className={`parking-slot ${slot.occupied ? "occupied-slot" : "free-slot"}`}
+            key={slot._id}
+            className={`parking-slot ${
+              slot.isOccupied ? "occupied-slot" : "free-slot"
+            }`}
           >
-            <p>Slot {slot.id}</p>
-            <p>{slot.occupied ? "occupied" : "Available"}</p>
+            <p>Slot {slot.slotNumber}</p>
+            <p>{slot.isOccupied ? "Occupied" : "Available"}</p>
+
+            {slot.isOccupied && (
+              <div className="timer">
+                <Timer size={16} />
+                <span>Active</span>
+              </div>
+            )}
           </div>
         ))}
       </div>

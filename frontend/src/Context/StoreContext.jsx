@@ -1,23 +1,35 @@
-import { createContext,useEffect, useState } from "react";
-import axios from "axios"
+import { createContext, useContext, useEffect, useState } from "react";
+import { fetchSlots } from "../lib/api";
 
-export const StoreContext = createContext(null);
+const StoreContext = createContext();
 
-const StoreContextProvider = (props) =>{
-    const url =  "http://localhost:4000"
+export function StoreProvider({ children }) {
+  const [slots, setSlots] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const contextValue = {
-        
-        url
-        
-    };
+  async function loadSlots() {
+    try {
+      setLoading(true);
+      const data = await fetchSlots();
+      setSlots(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-    return (
-        <StoreContext.Provider value={contextValue}>
-            {props.children}
-        </StoreContext.Provider>
-    );
+  useEffect(() => {
+    loadSlots();
+    const interval = setInterval(loadSlots, 5000); // auto-refresh
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <StoreContext.Provider value={{ slots, loading }}>
+      {children}
+    </StoreContext.Provider>
+  );
 }
 
-
-export default StoreContextProvider;
+export const useStore = () => useContext(StoreContext);
