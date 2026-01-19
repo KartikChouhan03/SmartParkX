@@ -1,12 +1,11 @@
+
 const express = require("express");
 const router = express.Router();
+const parking = require("../controllers/parkingController");
 
-const parkingController = require("../controllers/parkingController");
-
-// ANPR entry
-router.post("/entry", parkingController.entry);
-// ANPR exit
-router.post("/exit", parkingController.exit);
+router.post("/entry", parking.entry);
+router.post("/exit", parking.exit);
+router.get("/active", parking.getActiveSessions);
 
 
 module.exports = router;

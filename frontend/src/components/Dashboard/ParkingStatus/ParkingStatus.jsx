@@ -1,62 +1,68 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./ParkingStatus.css";
 import { Timer } from "lucide-react";
+import { useStore } from "../../../Context/StoreContext";
+
+const RATE_PER_HOUR = 50; // keep consistent with backend
 
 const ParkingStatus = () => {
-  const slotNumber = 3;
-  const ratePerHour = 20;
+  const { sessions } = useStore();
 
+  if (!sessions || sessions.length === 0) {
+    return (
+      <div className="parking-status-card">
+        <h2>Current Parking Status</h2>
+        <p>No active parking session</p>
+      </div>
+    );
+  }
 
-  const plateNumber = "MP04ZA0011";
+  // For now, show the latest active session
+  const session = sessions[0];
 
-  const [seconds, setSeconds] = useState(0);
+  const entryTime = new Date(session.entryTime);
+  const now = new Date();
+  const diffMs = now - entryTime;
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSeconds((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const totalSeconds = Math.floor(diffMs / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
 
-  const formatTime = (secs) => {
-    const hrs = Math.floor(secs / 3600);
-    const mins = Math.floor((secs % 3600) / 60);
-    const s = secs % 60;
-    return `${hrs.toString().padStart(2, "0")}:${mins
+  const bill = Math.ceil(diffMs / (1000 * 60 * 60)) * RATE_PER_HOUR;
+
+  const formatTime = () =>
+    `${hours.toString().padStart(2, "0")}:${minutes
       .toString()
-      .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-  
-  };
-
-  // Cost estimation
-  const hours = seconds / 3600;
-  const estimatedCost = (hours * ratePerHour).toFixed(2);
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
   return (
     <div className="parking-status-card">
       <h2>Current Parking Status</h2>
-      <div className="status-item">
-        <span className="label">Slot Number:</span>
-        <span className="value">#{slotNumber}</span>
-      </div>
+
       <div className="status-item">
         <span className="label">Plate Number:</span>
-        <span className="value plate">{plateNumber}</span>
+        <span className="value plate">{session.vehicleNumber}</span>
       </div>
+
       <div className="status-item">
-        <span className="label">Rate per Hour:</span>
-        <span className="value">₹{ratePerHour}/hr</span>
+        <span className="label">Entry Time:</span>
+        <span className="value">
+          {entryTime.toLocaleTimeString()}
+        </span>
       </div>
+
       <div className="status-item">
         <span className="label">Time Parked:</span>
         <span className="value timer">
           <Timer size={18} className="timer-icon" />
-          {formatTime(seconds)}
+          {formatTime()}
         </span>
       </div>
+
       <div className="status-item">
         <span className="label">Estimated Cost:</span>
-        <span className="value">₹{estimatedCost}</span>
+        <span className="value">₹{bill}</span>
       </div>
     </div>
   );

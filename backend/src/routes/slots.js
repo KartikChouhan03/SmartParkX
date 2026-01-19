@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const slots = require("../controllers/slotController");
 
-const slotController = require("../controllers/slotController");
 
-router.post("/", slotController.createSlot);
-router.get("/", slotController.getAllSlots);
-router.patch("/update", slotController.updateSlotStatus);
+
+router.get("/", slots.getAllSlots); 
+router.patch("/update", slots.updateSlot);
 
 module.exports = router;

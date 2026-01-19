@@ -25,3 +25,11 @@ export async function parkingExit(vehicleNumber) {
   if (!res.ok) throw new Error("Exit failed");
   return res.json();
 }
+
+export async function fetchActiveSessions() {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_BASE}/parking/active`
+  );
+  if (!res.ok) throw new Error("Failed to fetch active sessions");
+  return res.json();
+}

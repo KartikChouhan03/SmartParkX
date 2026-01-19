@@ -1,40 +1,29 @@
 const mongoose = require("mongoose");
 
-const parkingSessionSchema = new mongoose.Schema(
-  {
-    vehicleNumber: {
-      type: String,
-      required: true,
-      uppercase: true,
-      trim: true,
-      index: true
-    },
-
-    entryTime: {
-      type: Date,
-      required: true,
-      default: Date.now
-    },
-
-    exitTime: {
-      type: Date,
-      default: null
-    },
-
-    isActive: {
-      type: Boolean,
-      default: true,
-      index: true
-    },
-
-    billAmount: {
-      type: Number,
-      default: 0
-    }
+const parkingSessionSchema = new mongoose.Schema({
+  vehicleNumber: { type: String, required: true },
+  entryTime: { type: Date, required: true },
+  exitTime: { type: Date },
+  slot: { type: String, default: null },
+  status: {
+    type: String,
+    enum: ["ACTIVE", "COMPLETED"],
+    default: "ACTIVE"
   },
-  {
-    timestamps: true
-  }
-);
+  billAmount: { type: Number }
+});
 
 module.exports = mongoose.model("ParkingSession", parkingSessionSchema);
+
+
+exports.getActiveSessions = async (req, res) => {
+  try {
+    const sessions = await ParkingSession.find({
+      status: "ACTIVE"
+    }).sort({ entryTime: -1 });
+
+    res.json(sessions);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch active sessions" });
+  }
+};

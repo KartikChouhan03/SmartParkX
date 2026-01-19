@@ -4,6 +4,7 @@ const helmet = require("helmet");
 
 const slotRoutes = require("./routes/slots");
 const parkingRoutes = require("./routes/parking");
+const anprRoutes = require("./routes/anpr");
 
 const app = express();
 
@@ -20,5 +21,7 @@ app.get("/", (req, res) => {
 // routes
 app.use("/api/slots", slotRoutes);
 app.use("/api/parking", parkingRoutes);
+
+app.use("/api/anpr", anprRoutes);
 
 module.exports = app;

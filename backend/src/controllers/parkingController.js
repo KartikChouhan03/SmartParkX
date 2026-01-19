@@ -1,80 +1,69 @@
 const ParkingSession = require("../models/ParkingSession");
-const { calculateBill } = require("../utils/billing");
 
-// ENTRY (ANPR)
-const entry = async (req, res) => {
-  try {
-    const { vehicleNumber } = req.body;
+exports.entry = async (req, res) => {
+  const { vehicleNumber } = req.body;
 
-    if (!vehicleNumber) {
-      return res.status(400).json({ message: "vehicleNumber is required" });
-    }
-
-    const activeSession = await ParkingSession.findOne({
-      vehicleNumber: vehicleNumber.toUpperCase(),
-      isActive: true
-    });
-
-    if (activeSession) {
-      return res.status(400).json({
-        message: "Vehicle already inside parking"
-      });
-    }
-
-    const session = await ParkingSession.create({
-      vehicleNumber
-    });
-
-    res.status(201).json({
-      message: "Entry recorded",
-      session
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  if (!vehicleNumber) {
+    return res.status(400).json({ error: "Vehicle number required" });
   }
+
+  // Prevent duplicate active sessions
+  const existing = await ParkingSession.findOne({
+    vehicleNumber,
+    status: "ACTIVE"
+  });
+
+  if (existing) {
+    return res.status(400).json({ error: "Vehicle already inside" });
+  }
+
+  const session = await ParkingSession.create({
+    vehicleNumber,
+    entryTime: new Date()
+  });
+
+  res.json({
+    message: "Entry registered",
+    sessionId: session._id
+  });
 };
 
-// EXIT (ANPR)
-const exit = async (req, res) => {
-  try {
-    const { vehicleNumber } = req.body;
+exports.exit = async (req, res) => {
+  const { vehicleNumber } = req.body;
 
-    if (!vehicleNumber) {
-      return res.status(400).json({ message: "vehicleNumber is required" });
-    }
+  const session = await ParkingSession.findOne({
+    vehicleNumber,
+    status: "ACTIVE"
+  });
 
-    const session = await ParkingSession.findOne({
-      vehicleNumber: vehicleNumber.toUpperCase(),
-      isActive: true
-    });
-
-    if (!session) {
-      return res.status(404).json({
-        message: "No active parking session found"
-      });
-    }
-
-    session.exitTime = new Date();
-    session.billAmount = calculateBill(
-      session.entryTime,
-      session.exitTime
-    );
-    session.isActive = false;
-
-    await session.save();
-
-    res.json({
-      message: "Exit successful",
-      bill: session.billAmount,
-      session
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  if (!session) {
+    return res.status(404).json({ error: "Active session not found" });
   }
+
+  session.exitTime = new Date();
+  session.status = "COMPLETED";
+
+  const durationMs = session.exitTime - session.entryTime;
+  const hours = Math.ceil(durationMs / (1000 * 60 * 60));
+
+  session.billAmount = hours * 50; // ₹50/hour example
+  await session.save();
+
+  res.json({
+    message: "Exit completed",
+    billAmount: session.billAmount
+  });
 };
 
-// XPORTS (THIS IS THE KEY)
-module.exports = {
-  entry,
-  exit
+
+exports.getActiveSessions = async (req, res) => {
+  try {
+    const sessions = await ParkingSession.find({
+      status: "ACTIVE"
+    }).sort({ entryTime: -1 });
+
+    res.json(sessions);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch active sessions" });
+  }
 };
