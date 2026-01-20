@@ -1,12 +1,9 @@
 import { Home, Car, CreditCard, Settings, LogOut } from "lucide-react";
 import "./Sidebar.css";
 import { assets } from "@/assets/assets";
-import {useNavigate } from "react-router-dom";
-
-
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
-  
   const navigate = useNavigate();
 
   return (
@@ -35,10 +32,14 @@ export default function Sidebar() {
 
       <div className="sidebar-bottom">
         <div className="user-card">
-          <img src="" alt="" className="user-avatar" />
+          <img
+            src="https://ui-avatars.com/api/?name=Kartik&background=random"
+            alt="User Avatar"
+            className="user-avatar"
+          />
           <div>
             <p className="user-name">Kartik</p>
-            <button onClick={()=>navigate('/')} className="logout">
+            <button onClick={() => navigate("/")} className="logout">
               <LogOut size={14} /> Logout
             </button>
           </div>

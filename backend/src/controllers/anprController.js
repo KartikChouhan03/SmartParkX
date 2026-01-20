@@ -2,6 +2,8 @@ const { execFile } = require("child_process");
 const path = require("path");
 const fs = require("fs");
 const ParkingSession = require("../models/ParkingSession");
+const User = require("../models/User");
+
 
 /**
  * 1️⃣ Multipart upload (Insomnia / browser)
@@ -35,7 +37,7 @@ exports.handleUpload = async (req, res) => {
 };
 
 /**
- * 2️⃣ ESP32 raw JPEG upload (NON-BLOCKING)
+  ESP32 raw JPEG upload (NON-BLOCKING)
  */
 exports.handleEsp32Upload = async (req, res) => {
   const chunks = [];
@@ -56,7 +58,7 @@ exports.handleEsp32Upload = async (req, res) => {
     //Respond immediately (ESP32 must NOT wait)
     res.json({ ok: true, received: true });
 
-    // 🔁 Run ANPR asynchronously
+    // Run ANPR asynchronously
     const pythonScript = path.resolve("anpr/run_anpr.py");
 
     execFile("C:\\Users\\chouh\\AppData\\Local\\Programs\\Python\\Python311\\python.exe", [pythonScript, filePath], async (err, stdout) => {
@@ -66,26 +68,29 @@ exports.handleEsp32Upload = async (req, res) => {
       }
 
       const plate = stdout.trim();
-      if (!plate || plate === "UNKNOWN") {
-        console.log("No valid plate detected");
+      if (!plate || plate === "UNKNOWN") return;
+
+      // 🔍 Find user by vehicle number
+      const user = await User.findOne({ vehicleNumber: plate });
+      if (!user) {
+        console.log("Unknown vehicle:", plate);
         return;
       }
 
-      console.log("Plate:", plate);
-
-      // 🔍 Check active session
+      // 🔍 Check active session for THIS user
       const activeSession = await ParkingSession.findOne({
-        vehicleNumber: plate,
+        user: user._id,
         status: "ACTIVE"
       });
 
       if (!activeSession) {
         // ✅ ENTRY
         await ParkingSession.create({
+          user: user._id,
           vehicleNumber: plate,
           entryTime: new Date()
         });
-        console.log("ENTRY registered:", plate);
+        console.log("ENTRY for user:", user.email);
       } else {
         // ✅ EXIT
         activeSession.exitTime = new Date();
@@ -96,7 +101,7 @@ exports.handleEsp32Upload = async (req, res) => {
         activeSession.billAmount = hours * 50;
 
         await activeSession.save();
-        console.log("EXIT completed:", plate);
+        console.log("EXIT for user:", user.email);
       }
     });
 

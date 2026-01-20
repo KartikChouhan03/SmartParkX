@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Facebook, Github, Linkedin, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
+import { loginUser, signupUser } from "../../lib/api";
 
 const SocialButton = ({ icon: Icon }) => (
   <button className="social-button">
@@ -12,28 +13,57 @@ const SocialButton = ({ icon: Icon }) => (
 // --- SIGN IN FORM ---
 const SignInForm = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
-    e.preventDefault(); // prevent form reload
-    navigate("/dashboard");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const res = await loginUser({ email, password });
+
+      if (res.error) {
+        setError(res.error);
+        return;
+      }
+
+      // ✅ Save auth data
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("user", JSON.stringify(res.user));
+
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError("Login failed. Check your connection.");
+    }
   };
 
   return (
     <div className="form-container">
       <h2>Sign In</h2>
-      <div className="social-buttons">
-        <SocialButton icon={Mail} />
-        <SocialButton icon={Facebook} />
-        <SocialButton icon={Github} />
-        <SocialButton icon={Linkedin} />
-      </div>
-      <p>Or login with email</p>
+
+      {error && <p className="error-text">{error}</p>}
+
       <form className="form" onSubmit={handleLogin}>
-        <input type="email" placeholder="Email" className="input" />
-        <input type="password" placeholder="Password" className="input" />
-        <a href="" className="forgot-link">
-          Forgot Your Password?
-        </a>
+        <input
+          type="email"
+          placeholder="Email"
+          className="input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="input"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
         <button type="submit" className="login-button">
           LOGIN
         </button>
@@ -43,28 +73,79 @@ const SignInForm = () => {
 };
 
 // --- SIGN UP FORM ---
-const SignUpForm = () => {
+const SignUpForm = ({ onSignupSuccess }) => {
   const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [vehicleNumber, setVehicleNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    navigate("/dashboard");
+    setError("");
+
+    try {
+      const res = await signupUser({
+        name,
+        email,
+        password,
+        vehicleNumber,
+      });
+
+      if (res.error) {
+        setError(res.error);
+        return;
+      }
+
+      // After signup, switch to login view
+      onSignupSuccess();
+    } catch (err) {
+      console.error("Signup failed:", err);
+      setError("Signup failed. Check your connection.");
+    }
   };
 
   return (
     <div className="form-container">
       <h2>Create Account</h2>
-      <div className="social-buttons">
-        <SocialButton icon={Mail} />
-        <SocialButton icon={Facebook} />
-        <SocialButton icon={Github} />
-        <SocialButton icon={Linkedin} />
-      </div>
-      <p>or use your email for registration</p>
+
+      {error && <p className="error-text">{error}</p>}
+
       <form className="form" onSubmit={handleSignup}>
-        <input type="text" placeholder="Name" className="input" />
-        <input type="email" placeholder="Email" className="input" />
-        <input type="password" placeholder="Password" className="input" />
+        <input
+          type="text"
+          placeholder="Name"
+          className="input"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          className="input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Vehicle Number"
+          className="input"
+          value={vehicleNumber}
+          onChange={(e) => setVehicleNumber(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="input"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
         <button type="submit" className="signup-button">
           SIGN UP
         </button>
@@ -77,11 +158,19 @@ const SignUpForm = () => {
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
 
+  useEffect(() => {
+    console.log("AuthPage mounted");
+  }, []);
+
   return (
-    <div className={`container ${isLogin ? "" : "slide-right"}`}>
+    <div className={`auth-container ${isLogin ? "" : "slide-right"}`}>
       <div className="card">
         <div className="form-panel">
-          {isLogin ? <SignInForm /> : <SignUpForm />}
+          {isLogin ? (
+            <SignInForm />
+          ) : (
+            <SignUpForm onSignupSuccess={() => setIsLogin(true)} />
+          )}
         </div>
         <div className="overlay-panel">
           <div className="overlay-content">
@@ -101,7 +190,9 @@ export default function AuthPage() {
             ) : (
               <>
                 <h2>Hello, Friend!</h2>
-                <p>Enter your personal details and start your journey with us</p>
+                <p>
+                  Enter your personal details and start your journey with us
+                </p>
                 <button
                   onClick={() => setIsLogin(true)}
                   className="button button-overlay"

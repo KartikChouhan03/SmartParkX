@@ -19,9 +19,14 @@ app.get("/", (req, res) => {
 });
 
 // routes
+app.use("/api/auth", require("./routes/auth"));
+
+
 app.use("/api/slots", slotRoutes);
 app.use("/api/parking", parkingRoutes);
 
 app.use("/api/anpr", anprRoutes);
+
+
 
 module.exports = app;

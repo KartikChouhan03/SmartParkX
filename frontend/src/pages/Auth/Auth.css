@@ -1,28 +1,36 @@
+.auth-container {
+  width: 100%;
+  min-height: 100vh;
+  max-width: 210vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(135deg, #d7f4ff, #96b7d1, #d9ecf8);
 
-.container{
-    width: 100%;
-    min-height: 100vh;
-    max-width: 210vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background: rgb(255, 255, 255);
-    background: linear-gradient(135deg, #d7f4ff, #96b7d1, #d9ecf8);
-    
+}
+
+
+.auth-container.slide-right .form-panel {
+  transform: translateX(100%);
+}
+
+.auth-container.slide-right .overlay-panel {
+  transform: translateX(-100%);
 }
 
 /* Card */
 .card {
   background: #ffffff;
-  width: 800px;     
+  width: 800px;
   height: 500px;
   width: 800px;
   max-width: 90%;
   display: flex;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
   position: relative;
 }
 
@@ -84,9 +92,9 @@
 
 .form-container h2 {
   margin-bottom: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    color: #043565;
+  font-size: 28px;
+  font-weight: bold;
+  color: #043565;
 }
 
 .social-buttons {
@@ -103,20 +111,22 @@
   cursor: pointer;
 }
 
-.form-container p{
-    margin-top: 5px;
-    margin: 8px 4px;
-    font-size: 14px;
-    color: #666;
+.form-container p {
+  margin-top: 5px;
+  margin: 8px 4px;
+  font-size: 14px;
+  color: #666;
 }
-.form-container a{
-    color: #828282;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 12px;
-    margin: 5px;
-    position: relative;
+
+.form-container a {
+  color: #828282;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 12px;
+  margin: 5px;
+  position: relative;
 }
+
 .form-container a:hover {
   text-decoration: underline;
 
@@ -130,7 +140,8 @@
   display: block;
 }
 
-.login-button, .signup-button {
+.login-button,
+.signup-button {
   padding: 10px 25px 10px 25px;
   background: #134883;
   color: white;
@@ -143,17 +154,16 @@
 
 }
 
-.login-button:hover, .signup-button:hover {
+.login-button:hover,
+.signup-button:hover {
   background: #062545;
 }
 
 /* Animation classes */
-.container.slide-right .form-panel {
+.auth-container.slide-right .form-panel {
   transform: translateX(100%);
 }
 
-.container.slide-right .overlay-panel {
+.auth-container.slide-right .overlay-panel {
   transform: translateX(-100%);
 }
-
-

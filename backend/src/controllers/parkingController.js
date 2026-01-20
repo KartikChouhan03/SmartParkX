@@ -56,14 +56,13 @@ exports.exit = async (req, res) => {
 };
 
 
-exports.getActiveSessions = async (req, res) => {
-  try {
-    const sessions = await ParkingSession.find({
-      status: "ACTIVE"
-    }).sort({ entryTime: -1 });
+exports.getMyActiveSession = async (req, res) => {
+  const userId = req.user.id;
 
-    res.json(sessions);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch active sessions" });
-  }
+  const sessions = await ParkingSession.find({
+    user: userId,
+    status: "ACTIVE"
+  }).sort({ entryTime: -1 });
+
+  res.json(sessions);
 };

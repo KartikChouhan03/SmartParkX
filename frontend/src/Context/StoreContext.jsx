@@ -1,47 +1,49 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchSlots, fetchActiveSessions } from "../lib/api";
+import { fetchSlots, fetchMyActiveSessions } from "../lib/api";
+import { useAuth } from "./AuthContext";
 
 const StoreContext = createContext();
 
+const POLLING_INTERVAL = 5000;
+
 export function StoreProvider({ children }) {
+  const { token } = useAuth();
+
   const [slots, setSlots] = useState([]);
-  const [sessions, setSessions] = useState([]);
+  const [activeSession, setActiveSession] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  async function loadSlots() {
-    try {
-      const data = await fetchSlots();
-      setSlots(data);
-    } catch (err) {
-      console.error("Slots error:", err);
+  async function loadData() {
+    if (!token) {
+      setSlots([]);
+      setActiveSession(null);
+      return;
     }
-  }
 
-  async function loadSessions() {
     try {
-      const data = await fetchActiveSessions();
-      setSessions(data);
+      setLoading(true);
+      const [slotsData, sessionData] = await Promise.all([
+        fetchSlots(),
+        fetchMyActiveSessions(),
+      ]);
+
+      setSlots(slotsData);
+      setActiveSession(sessionData);
     } catch (err) {
-      console.error("Sessions error:", err);
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
-    setLoading(true);
-    loadSlots();
-    loadSessions();
-    setLoading(false);
-
-    const interval = setInterval(() => {
-      loadSlots();
-      loadSessions();
-    }, 5000);
-
+    loadData();
+    const interval = setInterval(loadData, POLLING_INTERVAL);
     return () => clearInterval(interval);
-  }, []);
+  }, [token]);
 
   return (
-    <StoreContext.Provider value={{ slots, sessions, loading }}>
+    <StoreContext.Provider value={{ slots, activeSession, loading }}>
       {children}
     </StoreContext.Provider>
   );
