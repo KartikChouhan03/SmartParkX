@@ -17,7 +17,12 @@ exports.entry = async (req, res) => {
     return res.status(400).json({ error: "Vehicle already inside" });
   }
 
+  // Extract user ID from authenticated request
+  // Ensure the route is protected by auth middleware
+  const userId = req.user.id;
+
   const session = await ParkingSession.create({
+    user: userId,
     vehicleNumber,
     entryTime: new Date()
   });
@@ -59,10 +64,10 @@ exports.exit = async (req, res) => {
 exports.getMyActiveSession = async (req, res) => {
   const userId = req.user.id;
 
-  const sessions = await ParkingSession.find({
+  const sessions = await ParkingSession.findOne({
     user: userId,
     status: "ACTIVE"
   }).sort({ entryTime: -1 });
 
-  res.json(sessions);
+  res.json(sessions); // Returns object or null
 };

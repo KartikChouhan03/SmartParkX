@@ -9,8 +9,8 @@ from ultralytics import YOLO
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "anpr_model", "weights", "best.pt")
 
-CROPPED_DIR = "cropped_plates"
-TEXT_DIR = "detected_texts"
+CROPPED_DIR = os.path.join(BASE_DIR, "cropped_plates")
+TEXT_DIR = os.path.join(BASE_DIR, "detected_texts")
 
 # Tesseract Configuration: PSM 7 (single line of text) and Whitelist (A-Z, 0-9)
 TESSERACT_CONFIG = "--psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

@@ -19,15 +19,3 @@ const parkingSessionSchema = new mongoose.Schema({
 });
 module.exports = mongoose.model("ParkingSession", parkingSessionSchema);
 
-
-exports.getActiveSessions = async (req, res) => {
-  try {
-    const sessions = await ParkingSession.find({
-      status: "ACTIVE"
-    }).sort({ entryTime: -1 });
-
-    res.json(sessions);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch active sessions" });
-  }
-};

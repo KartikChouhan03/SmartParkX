@@ -3,6 +3,7 @@ import { Facebook, Github, Linkedin, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import { loginUser, signupUser } from "../../lib/api";
+import { useAuth } from "../../Context/AuthContext";
 
 const SocialButton = ({ icon: Icon }) => (
   <button className="social-button">
@@ -13,6 +14,8 @@ const SocialButton = ({ icon: Icon }) => (
 // --- SIGN IN FORM ---
 const SignInForm = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,21 +25,11 @@ const SignInForm = () => {
     setError("");
 
     try {
-      const res = await loginUser({ email, password });
-
-      if (res.error) {
-        setError(res.error);
-        return;
-      }
-
-      // ✅ Save auth data
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("user", JSON.stringify(res.user));
-
+      const data = await loginUser({ email, password });
+      login(data);
       navigate("/dashboard");
     } catch (err) {
-      console.error("Login failed:", err);
-      setError("Login failed. Check your connection.");
+      setError(err.error || "Login failed");
     }
   };
 
@@ -44,7 +37,7 @@ const SignInForm = () => {
     <div className="form-container">
       <h2>Sign In</h2>
 
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="error">{error}</p>}
 
       <form className="form" onSubmit={handleLogin}>
         <input
@@ -55,6 +48,7 @@ const SignInForm = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+
         <input
           type="password"
           placeholder="Password"
@@ -73,12 +67,17 @@ const SignInForm = () => {
 };
 
 // --- SIGN UP FORM ---
-const SignUpForm = ({ onSignupSuccess }) => {
+const SignUpForm = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [vehicleNumber, setVehicleNumber] = useState("");
-  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    vehicleNumber: "",
+  });
+
   const [error, setError] = useState("");
 
   const handleSignup = async (e) => {
@@ -86,23 +85,11 @@ const SignUpForm = ({ onSignupSuccess }) => {
     setError("");
 
     try {
-      const res = await signupUser({
-        name,
-        email,
-        password,
-        vehicleNumber,
-      });
-
-      if (res.error) {
-        setError(res.error);
-        return;
-      }
-
-      // After signup, switch to login view
-      onSignupSuccess();
+      const data = await signupUser(form);
+      login(data);
+      navigate("/dashboard");
     } catch (err) {
-      console.error("Signup failed:", err);
-      setError("Signup failed. Check your connection.");
+      setError(err.error || "Signup failed");
     }
   };
 
@@ -110,40 +97,29 @@ const SignUpForm = ({ onSignupSuccess }) => {
     <div className="form-container">
       <h2>Create Account</h2>
 
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="error">{error}</p>}
 
       <form className="form" onSubmit={handleSignup}>
         <input
-          type="text"
           placeholder="Name"
           className="input"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
         <input
-          type="email"
           placeholder="Email"
           className="input"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
         <input
-          type="text"
+          placeholder="Password"
+          type="password"
+          className="input"
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+        />
+        <input
           placeholder="Vehicle Number"
           className="input"
-          value={vehicleNumber}
-          onChange={(e) => setVehicleNumber(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="input"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          onChange={(e) => setForm({ ...form, vehicleNumber: e.target.value })}
         />
 
         <button type="submit" className="signup-button">

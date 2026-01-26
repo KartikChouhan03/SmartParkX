@@ -1,6 +1,8 @@
 
+const API_BASE = `${window.location.protocol}//${window.location.hostname}:5000/api`;
+
 export async function loginUser(data) {
-  const res = await fetch(`${import.meta.env.VITE_API_BASE}/auth/login`, {
+  const res = await fetch(`${API_BASE}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -14,7 +16,7 @@ export async function loginUser(data) {
 }
 
 export async function signupUser(data) {
-  const res = await fetch(`${import.meta.env.VITE_API_BASE}/auth/signup`, {
+  const res = await fetch(`${API_BASE}/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -30,15 +32,19 @@ export async function signupUser(data) {
 
 
 export async function fetchSlots() {
-  const res = await fetch(`${import.meta.env.VITE_API_BASE}/slots`);
+  const res = await fetch(`${API_BASE}/slots`);
   if (!res.ok) throw new Error("Failed to fetch slots");
   return res.json();
 }
 
 export async function parkingEntry(vehicleNumber) {
-  const res = await fetch(`${import.meta.env.VITE_API_BASE}/parking/entry`, {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_BASE}/parking/entry`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
     body: JSON.stringify({ vehicleNumber })
   });
   if (!res.ok) throw new Error("Entry failed");
@@ -46,26 +52,33 @@ export async function parkingEntry(vehicleNumber) {
 }
 
 export async function parkingExit(vehicleNumber) {
-  const res = await fetch(`${import.meta.env.VITE_API_BASE}/parking/exit`, {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_BASE}/parking/exit`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
     body: JSON.stringify({ vehicleNumber })
   });
   if (!res.ok) throw new Error("Exit failed");
   return res.json();
 }
 
-export async function fetchMyActiveSessions() {
+export async function fetchMyActiveSession() {
   const token = localStorage.getItem("token");
 
+  if (!token) return null;
+
   const res = await fetch(
-    `${import.meta.env.VITE_API_BASE}/parking/my/active`,
+    `${API_BASE}/parking/my/active`,
     {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
 
+  if (!res.ok) return null;
   return res.json();
 }

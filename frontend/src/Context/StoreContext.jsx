@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchSlots, fetchMyActiveSessions } from "../lib/api";
+import { fetchSlots, fetchMyActiveSession } from "../lib/api";
 import { useAuth } from "./AuthContext";
 
 const StoreContext = createContext();
@@ -24,7 +24,7 @@ export function StoreProvider({ children }) {
       setLoading(true);
       const [slotsData, sessionData] = await Promise.all([
         fetchSlots(),
-        fetchMyActiveSessions(),
+        fetchMyActiveSession(),
       ]);
 
       setSlots(slotsData);
