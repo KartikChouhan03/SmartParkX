@@ -1,0 +1,92 @@
+.kpi-card {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    height: 110px;
+    background: var(--color-text-primary);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(10, 24, 50, 0.08);
+    isolation: isolate;
+    transition: transform 0.2s ease;
+}
+
+/* Hover motion (subtle) */
+.kpi-card:hover {
+    transform: translateY(-2px);
+}
+
+/* ===== Accent Bar ===== */
+.kpi-accent {
+    width: 5px;
+    background: var(--kpi-accent);
+}
+
+/* ===== Content ===== */
+.kpi-content {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+}
+
+.kpi-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+}
+
+/* ===== Glow Effects (VERY subtle) ===== */
+.kpi-glow,
+.kpi-border-glow {
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(circle at left center,
+            var(--kpi-accent),
+            transparent 60%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.kpi-glow {
+    z-index: 0;
+}
+
+.kpi-border-glow {
+    z-index: 1;
+}
+
+.kpi-card:hover .kpi-glow {
+    opacity: 0.08;
+}
+
+.kpi-card:hover .kpi-border-glow {
+    opacity: 0.06;
+}
+
+/* ===== Accent Variants ===== */
+.kpi-primary {
+    --kpi-accent: var(--color-primary);
+}
+
+.kpi-success {
+    --kpi-accent: var(--color-success);
+}
+
+.kpi-warning {
+    --kpi-accent: var(--color-warning);
+}
+
+.kpi-danger {
+    --kpi-accent: var(--color-danger);
+}

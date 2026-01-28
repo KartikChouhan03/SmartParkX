@@ -73,7 +73,7 @@
 }
 
 body {
-  background-color: var(--color-bg-dark);
+  background-color: var(--color-bg-light);
   color: var(--color-text-primary);
   font-family: var(--font-main);
 }

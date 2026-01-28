@@ -1,0 +1,53 @@
+/* ===============================
+   Top Navbar – SmartParkX Admin
+   =============================== */
+
+.admin-navbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    /* 👇 Slightly off-white */
+    background-color: var(--color-bg-light, #f6fafd);
+
+    padding: 0 24px;
+
+    /* Soft separation */
+    border-bottom: 1px solid rgba(10, 24, 50, 0.06);
+
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+/* ===== Left ===== */
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--color-text-dark);
+}
+
+/* ===== Right ===== */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-dark);
+}

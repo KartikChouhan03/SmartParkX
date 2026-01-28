@@ -1,5 +1,5 @@
 
-import logo from './LOGO.png'
+import logo from './logo.png'
 import hero from './hero.mp4'
 import about1 from './about1.svg'
 import about2 from './about2.svg'
@@ -17,8 +17,8 @@ import testimonialavatar from './testimonialavatar.jpg'
 export const assets = {
     logo,
     hero,
-    about1,about2,about3,
-    image1,image2,image3,
-    howitworks1,howitworks2,howitworks3,howitworks4,
+    about1, about2, about3,
+    image1, image2, image3,
+    howitworks1, howitworks2, howitworks3, howitworks4,
     testimonial, testimonialavatar
 }
