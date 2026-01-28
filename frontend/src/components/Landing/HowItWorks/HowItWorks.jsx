@@ -7,30 +7,30 @@ const HowItWorks = () => {
   const howItWorksData = [
     {
       step: 1,
-      title: "Find & Reserve a Spot",
+      title: "Seamless Entry & Exit",
       description:
-        "Use our mobile app to view real-time parking availability and reserve a spot at your destination before you even leave.",
+        "Drivers don’t need tickets, cards, or manual check-ins. SmartParkX automatically recognizes vehicles at entry and exit, allowing smooth access without stopping or delays. This creates a faster flow of vehicles while eliminating common issues like lost tickets or manual errors.",
       image: assets.howitworks1,
     },
     {
       step: 2,
-      title: "Seamless Entry & Exit",
+      title: "Find Parking Instantly",
       description:
-        "Our system uses ANPR to automatically recognize your vehicle’s license plate, allowing for barrier-free entry and exit without a ticket.",
+        "SmartParkX helps users quickly understand parking availability without confusion or guesswork. The system shows which slots are available and which are occupied, saving time and reducing unnecessary vehicle movement. Whether you are a driver looking for a spot or an administrator monitoring capacity, everything is visible in one place.",
       image: assets.howitworks2,
     },
     {
       step: 3,
-      title: "Effortless Payments",
+      title: "Automatic Parking Tracking",
       description:
-        "Billing is automatically calculated based on the time you spent. Payments are processed digitally, so you can drive out without stopping at a kiosk.",
+        "Once a vehicle is parked, SmartParkX automatically starts tracking the parking session. Users can see their current parking status, duration, and estimated cost in real time, while administrators get accurate occupancy data without relying on manual reporting or staff intervention.",
       image: assets.howitworks3,
     },
     {
       step: 4,
-      title: "Guidance to Your Car",
+      title: "Smart Monitoring & Control",
       description:
-        "For large car parks, the app can guide you back to your vehicle, ensuring you never waste time searching for your car again.",
+        "SmartParkX gives administrators complete control over parking operations through a dedicated dashboard. Slot usage, parking sessions, and system activity can be monitored easily, helping optimize space utilization, improve management efficiency, and plan for future expansion.",
       image: assets.howitworks4,
     },
   ];
@@ -59,7 +59,7 @@ const HowItWorks = () => {
         root: null,
         rootMargin: "0px",
         threshold: 0.6,
-      }
+      },
     );
 
     timelineRefs.current.forEach((ref) => {

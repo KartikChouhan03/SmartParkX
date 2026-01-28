@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Table,
   TableHeader,
@@ -7,47 +7,11 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import "./ParkingHistory.css"
+import "./ParkingHistory.css";
+import { useStore } from "../../../Context/StoreContext";
 
 const ParkingHistory = () => {
-  const historyData = [
-    {
-      id: 1,
-      date: "2025-10-25",
-      location: "Block A - SmartParkX Center",
-      slot: "A12",
-      duration: "1h 45m",
-      cost: "₹60",
-      status: "Completed",
-    },
-    {
-      id: 2,
-      date: "2025-10-20",
-      location: "Mall Parking Zone B",
-      slot: "B05",
-      duration: "2h 10m",
-      cost: "₹80",
-      status: "Completed",
-    },
-    {
-      id: 3,
-      date: "2025-10-15",
-      location: "TechPark Basement 2",
-      slot: "T08",
-      duration: "3h 05m",
-      cost: "₹100",
-      status: "Completed",
-    },
-    {
-      id: 4,
-      date: "2025-10-10",
-      location: "Mall Basement 2",
-      slot: "08",
-      duration: "4h 05m",
-      cost: "₹120",
-      status: "Completed",
-    },
-  ];
+  const { history } = useStore();
 
   return (
     <div className="history-container">
@@ -67,23 +31,40 @@ const ParkingHistory = () => {
           </TableHeader>
 
           <TableBody>
-            {historyData.map((record) => (
-              <TableRow key={record.id}>
-                <TableCell>{record.date}</TableCell>
-                <TableCell>{record.location}</TableCell>
-                <TableCell>{record.slot}</TableCell>
-                <TableCell>{record.duration}</TableCell>
-                <TableCell>{record.cost}</TableCell>
-                <TableCell>
-                  <span className="status completed">{record.status}</span>
+            {history.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  className="text-center py-4 text-gray-500"
+                >
+                  No parking records found.
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              history.map((record) => {
+                const entry = new Date(record.entryTime);
+                const exit = new Date(record.exitTime);
+                const durationMin = Math.ceil((exit - entry) / (1000 * 60));
+
+                return (
+                  <TableRow key={record._id}>
+                    <TableCell>{exit.toLocaleDateString()}</TableCell>
+                    <TableCell>SmartParkX Main Parking</TableCell>
+                    <TableCell>{record.slot || "—"}</TableCell>
+                    <TableCell>{durationMin} min</TableCell>
+                    <TableCell>₹{record.billAmount}</TableCell>
+                    <TableCell>
+                      <span className="status completed">Completed</span>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </div>
     </div>
   );
-}
+};
 
-export default ParkingHistory
+export default ParkingHistory;

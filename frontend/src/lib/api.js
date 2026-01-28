@@ -82,3 +82,77 @@ export async function fetchMyActiveSession() {
   if (!res.ok) return null;
   return res.json();
 }
+
+export async function fetchMyLastSession() {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  const res = await fetch(`${API_BASE}/parking/my/last`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (!res.ok) return null;
+  return res.json();
+}
+
+export async function fetchMyParkingHistory() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(
+    `${API_BASE}/parking/my/history`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  if (!res.ok) throw new Error("Failed to fetch history");
+  return res.json();
+}
+
+
+export async function downloadReceipt(sessionId) {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(
+    `${API_BASE}/parking/my/receipt/${sessionId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  if (!res.ok) throw new Error("Failed to download receipt");
+
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `SmartParkX_Receipt_${sessionId}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+
+export async function fetchMySummary() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(
+    `${API_BASE}/parking/my/summary`,
+
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  if (!res.ok) throw new Error("Failed to fetch summary");
+  return res.json();
+}

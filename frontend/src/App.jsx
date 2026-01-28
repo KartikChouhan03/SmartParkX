@@ -38,9 +38,30 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/myparking" element={<MyParking />} />
-        <Route path="/billhistory" element={<BillHistory />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route
+          path="/myparking"
+          element={
+            <ProtectedRoute>
+              <MyParking />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/billhistory"
+          element={
+            <ProtectedRoute>
+              <BillHistory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </>
   );

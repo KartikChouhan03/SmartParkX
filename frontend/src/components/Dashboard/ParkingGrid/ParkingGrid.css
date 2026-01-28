@@ -2,7 +2,7 @@
   padding: 20px;
   background: #f8fafc;
   border-radius: 16px;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   margin: 20px;
 }
 
@@ -22,18 +22,21 @@
 }
 
 .parking-stats .occupied {
-  color: #ef4444; /* red */
+  color: #ef4444;
+  /* red */
   font-weight: 600;
 }
 
 .parking-stats .free {
-  color: #22c55e; /* green */
+  color: #22c55e;
+  /* green */
   font-weight: 600;
 }
 
 .parking-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 per row */
+  grid-template-columns: repeat(4, 1fr);
+  /* 4 per row */
   gap: 15px;
 }
 
@@ -47,8 +50,8 @@
 }
 
 .parking-slot:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
 }
 
 .occupied-slot {

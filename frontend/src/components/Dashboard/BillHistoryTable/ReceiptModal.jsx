@@ -8,9 +8,14 @@ import {
 } from "@/components/ui/dialog";
 import { Download } from "lucide-react";
 import "./ReceiptModal.css";
+import { downloadReceipt } from "../../../lib/api";
 
 const ReceiptModal = ({ open, onClose, data }) => {
   if (!data) return null;
+
+  const handleDownload = (row) => {
+    downloadReceipt(row._id);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -47,9 +52,11 @@ const ReceiptModal = ({ open, onClose, data }) => {
         </div>
 
         <DialogFooter>
-          <button className="download-receipt-btn">
+          <button
+            className="bill-btn download-btn"
+            onClick={() => handleDownload(data)}
+          >
             <Download size={18} />
-            Download PDF
           </button>
         </DialogFooter>
       </DialogContent>

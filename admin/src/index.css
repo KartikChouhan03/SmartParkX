@@ -1,0 +1,79 @@
+/* ===============================
+   SmartParkX Admin – Design System
+   =============================== */
+
+:root {
+  /* ===== Backgrounds ===== */
+  --color-bg-dark: #0a1832;
+  /* prussian blue */
+  --color-bg: #1a3d63;
+  /* yale blue */
+  --color-bg-light: #f6fafd;
+  /* platinum */
+
+  /* ===== Primary / Accent ===== */
+  --color-primary-dark: #4a7fa3;
+  --color-primary: #6096ba;
+  /* steel blue */
+  --color-primary-light: #7fb3d5;
+
+  /* ===== Text ===== */
+  --color-text-primary: #f6fafd;
+  --color-text-secondary: #cfd8e3;
+  --color-text-muted: #9aa7b2;
+  --color-text-dark: #0a1832;
+
+  /* ===== Borders & Dividers ===== */
+  --color-border-dark: #132b4a;
+  --color-border: #1f4a7c;
+  --color-border-light: #dce6ef;
+
+  /* ===== Status Colors ===== */
+  --color-success: #22c55e;
+  /* correct choice */
+  --color-success-light: #dcfce7;
+  --color-success-dark: #15803d;
+
+  --color-warning: #f59e0b;
+  /* correct choice */
+  --color-warning-light: #fef3c7;
+  --color-warning-dark: #b45309;
+
+  --color-danger: #993955;
+  /* vintage berry */
+  --color-danger-light: #f2c6d3;
+  --color-danger-dark: #6e253b;
+
+  /* ===== Font ===== */
+  --font-main: 'Inter', system-ui, sans-serif;
+
+  /* ===== Spacing ===== */
+  --space-2xs: 2px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* ===== Radius ===== */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* ===== Shadows ===== */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Global Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  font-family: var(--font-main);
+}

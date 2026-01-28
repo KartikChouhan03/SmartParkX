@@ -5,9 +5,6 @@ const ParkingSession = require("../models/ParkingSession");
 const User = require("../models/User");
 
 
-/**
- * 1️⃣ Multipart upload (Insomnia / browser)
- */
 exports.handleUpload = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ ok: false, error: "No image uploaded" });
@@ -36,9 +33,7 @@ exports.handleUpload = async (req, res) => {
   );
 };
 
-/**
-  ESP32 raw JPEG upload (NON-BLOCKING)
- */
+/*ESP32 raw JPEG upload */
 exports.handleEsp32Upload = async (req, res) => {
   const chunks = [];
 
@@ -70,29 +65,38 @@ exports.handleEsp32Upload = async (req, res) => {
       const plate = stdout.trim();
       if (!plate || plate === "UNKNOWN") return;
 
-      // 🔍 Find user by vehicle number
+      // Find user by vehicle number
       const user = await User.findOne({ vehicleNumber: plate });
       if (!user) {
         console.log("Unknown vehicle:", plate);
         return;
       }
 
-      // 🔍 Check active session for THIS user
+      // Check active session for THIS user
       const activeSession = await ParkingSession.findOne({
         user: user._id,
         status: "ACTIVE"
       });
 
       if (!activeSession) {
-        // ✅ ENTRY
+        // ENTRY
         await ParkingSession.create({
           user: user._id,
           vehicleNumber: plate,
           entryTime: new Date()
         });
         console.log("ENTRY for user:", user.email);
-      } else {
-        // ✅ EXIT
+      } else if (activeSession.status === "ACTIVE") {
+        // EXIT
+        const lastExitGap = 30 * 1000; // 30 seconds
+
+        if (
+          activeSession.exitTime &&
+          Date.now() - activeSession.exitTime.getTime() < lastExitGap
+        ) {
+          return;
+        }
+
         activeSession.exitTime = new Date();
         activeSession.status = "COMPLETED";
 

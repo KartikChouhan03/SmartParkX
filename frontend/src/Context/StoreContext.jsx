@@ -1,5 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchSlots, fetchMyActiveSession } from "../lib/api";
+import {
+  fetchSlots,
+  fetchMyActiveSession,
+  fetchMyLastSession,
+  fetchMyParkingHistory,
+  fetchMySummary,
+} from "../lib/api";
 import { useAuth } from "./AuthContext";
 
 const StoreContext = createContext();
@@ -11,24 +17,37 @@ export function StoreProvider({ children }) {
 
   const [slots, setSlots] = useState([]);
   const [activeSession, setActiveSession] = useState(null);
+  const [lastSession, setLastSession] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [summary, setSummary] = useState(null);
+  const [history, setHistory] = useState([]);
 
   async function loadData() {
     if (!token) {
       setSlots([]);
       setActiveSession(null);
+      setLastSession(null);
+      setLoading(false);
+      setSummary(null);
       return;
     }
 
     try {
       setLoading(true);
-      const [slotsData, sessionData] = await Promise.all([
-        fetchSlots(),
-        fetchMyActiveSession(),
-      ]);
+      const [slotsData, sessionData, lastData, historyData, summaryData] =
+        await Promise.all([
+          fetchSlots(),
+          fetchMyActiveSession(),
+          fetchMyLastSession(),
+          fetchMyParkingHistory(),
+          fetchMySummary(),
+        ]);
 
       setSlots(slotsData);
       setActiveSession(sessionData);
+      setLastSession(lastData);
+      setHistory(historyData);
+      setSummary(summaryData);
     } catch (err) {
       console.error(err);
     } finally {
@@ -43,7 +62,9 @@ export function StoreProvider({ children }) {
   }, [token]);
 
   return (
-    <StoreContext.Provider value={{ slots, activeSession, loading }}>
+    <StoreContext.Provider
+      value={{ slots, activeSession, lastSession, history, loading, summary }}
+    >
       {children}
     </StoreContext.Provider>
   );

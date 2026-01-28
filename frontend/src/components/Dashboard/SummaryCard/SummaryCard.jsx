@@ -1,21 +1,45 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Car, Clock, ParkingSquare, Wallet } from "lucide-react";
+import { useStore } from "../../../Context/StoreContext";
 import "./SummaryCard.css";
 
-// Dummy data - replace later with API data
-const cardData = [
-  { id: 1, title: "Current Parking", value: "Slot 3", icon: <Car /> },
-  { id: 2, title: "Active Duration", value: "15m", icon: <Clock /> },
-  { id: 3, title: "Total Parkings", value: "18", icon: <ParkingSquare /> },
-  { id: 4, title: "Total Bill Paid", value: "₹320", icon: <Wallet /> },
-];
-
 const SummaryCard = () => {
+  const { summary, activeSession } = useStore();
+
+  if (!summary) return null;
+
+  const duration = activeSession
+    ? Math.floor((Date.now() - new Date(summary.entryTime)) / 60000) + "m"
+    : "--";
+
+  const cards = [
+    {
+      title: "Current Parking",
+      value: summary.currentSlot || "—",
+      icon: <Car />,
+    },
+    {
+      title: "Active Duration",
+      value: duration,
+      icon: <Clock />,
+    },
+    {
+      title: "Total Parkings",
+      value: summary.totalParkings,
+      icon: <ParkingSquare />,
+    },
+    {
+      title: "Total Bill Paid",
+      value: `₹${summary.totalBillPaid}`,
+      icon: <Wallet />,
+    },
+  ];
+
   return (
     <div className="summary-card-container">
-      {cardData.map((card) => (
-        <Card key={card.id} className="summary-card">
+      {cards.map((card, i) => (
+        <Card key={i} className="summary-card">
           <CardHeader className="summary-card-header">
             <div className="summary-icon">{card.icon}</div>
             <CardTitle className="summary-title">{card.title}</CardTitle>

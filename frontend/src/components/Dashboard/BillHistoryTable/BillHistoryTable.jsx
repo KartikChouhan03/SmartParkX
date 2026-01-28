@@ -11,35 +11,10 @@ import { Download, ReceiptText } from "lucide-react";
 import "./BillHistoryTable.css";
 import ReceiptModal from "@/components/Dashboard/BillHistoryTable/ReceiptModal";
 import { useState } from "react";
+import { useStore } from "../../../Context/StoreContext";
 
 const BillHistoryTable = () => {
-  const billData = [
-    {
-      id: 1,
-      date: "2025-10-25",
-      location: "Block A - SmartParkX Center",
-      duration: "1h 45m",
-      amount: "₹60",
-      status: "Paid",
-    },
-    {
-      id: 2,
-      date: "2025-10-20",
-      location: "Mall Parking Zone B",
-      duration: "2h 10m",
-      amount: "₹80",
-      status: "Paid",
-    },
-    {
-      id: 3,
-      date: "2025-10-15",
-      location: "TechPark Basement 2",
-      duration: "3h 05m",
-      amount: "₹100",
-      status: "Paid",
-    },
-  ];
-
+  const { history } = useStore();
 
   const handleDownload = (row) => {
     console.log("Downloading receipt for:", row);
@@ -56,11 +31,11 @@ const BillHistoryTable = () => {
 
   return (
     <div className="bill-container">
-        <ReceiptModal
+      <ReceiptModal
         open={openModal}
         onClose={() => setOpenModal(false)}
         data={selectedReceipt}
-        />
+      />
       <h3 className="bill-title">Bill History</h3>
 
       <div className="bill-table-wrapper">
@@ -77,28 +52,51 @@ const BillHistoryTable = () => {
           </TableHeader>
 
           <TableBody>
-            {billData.map((bill) => (
-              <TableRow key={bill.id}>
-                <TableCell>{bill.date}</TableCell>
-                <TableCell>{bill.location}</TableCell>
-                <TableCell>{bill.duration}</TableCell>
-                <TableCell>{bill.amount}</TableCell>
-                <TableCell>
-                  <span className="bill-status paid">{bill.status}</span>
-                </TableCell>
-                <TableCell>
-                  <div className="bill-actions">
-                    <button
-                      className="bill-btn view-btn"
-                      onClick={() => handleViewReceipt(bill)}
-                    >
-                      <ReceiptText size={18} />
-                    </button>
-                    
-                  </div>
+            {history.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  className="text-center py-4 text-gray-500"
+                >
+                  No bill history found.
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              history.map((bill) => {
+                const entry = new Date(bill.entryTime);
+                const exit = new Date(bill.exitTime);
+                const durationMin = Math.ceil((exit - entry) / (1000 * 60));
+
+                return (
+                  <TableRow key={bill._id}>
+                    <TableCell>{exit.toLocaleDateString()}</TableCell>
+                    <TableCell>SmartParkX Main Parking</TableCell>
+                    <TableCell>{durationMin} min</TableCell>
+                    <TableCell>₹{bill.billAmount}</TableCell>
+                    <TableCell>
+                      <span className="bill-status paid">Paid</span>
+                    </TableCell>
+                    <TableCell>
+                      <button
+                        className="bill-btn view-btn"
+                        onClick={() =>
+                          handleViewReceipt({
+                            _id: bill._id,
+                            date: exit.toLocaleString(),
+                            location: "SmartParkX Main Parking",
+                            duration: `${durationMin} min`,
+                            amount: `₹${bill.billAmount}`,
+                            status: "Paid",
+                          })
+                        }
+                      >
+                        <ReceiptText size={18} />
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </div>

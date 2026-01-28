@@ -2,37 +2,42 @@ const Slot = require("../models/Slot");
 const ParkingSession = require("../models/ParkingSession");
 
 exports.updateSlot = async (req, res) => {
-  const { slotNumber, isOccupied } = req.body;
+  try {
+    const { slotNumber, isOccupied } = req.body;
 
-  if (!slotNumber || isOccupied === undefined) {
-    return res.status(400).json({ error: "Invalid data" });
-  }
-
-  // Update slot state
-  const slot = await Slot.findOneAndUpdate(
-    { slotNumber },
-    { isOccupied },
-    { new: true }
-  );
-
-  if (!slot) {
-    return res.status(404).json({ error: "Slot not found" });
-  }
-
-  // 🔑 AUTO-LINK LOGIC
-  if (isOccupied) {
-    const activeSession = await ParkingSession.findOne({
-      status: "ACTIVE",
-      slot: null
-    }).sort({ entryTime: -1 });
-
-    if (activeSession) {
-      activeSession.slot = slotNumber;
-      await activeSession.save();
+    if (!slotNumber || isOccupied === undefined) {
+      return res.status(400).json({ error: "Invalid data" });
     }
-  }
 
-  res.json({ message: "Slot updated", slot });
+    // Update slot state
+    const slot = await Slot.findOneAndUpdate(
+      { slotNumber },
+      { isOccupied },
+      { new: true }
+    );
+
+    if (!slot) {
+      return res.status(404).json({ error: "Slot not found" });
+    }
+
+    // 🔑 AUTO-LINK LOGIC
+    if (isOccupied) {
+      const activeSession = await ParkingSession.findOne({
+        status: "ACTIVE",
+        slot: null
+      }).sort({ entryTime: -1 });
+
+      if (activeSession) {
+        activeSession.slot = slotNumber;
+        await activeSession.save();
+      }
+    }
+
+    res.json({ message: "Slot updated", slot });
+  } catch (error) {
+    console.error("Update Slot error:", error);
+    res.status(500).json({ error: "Failed to update slot" });
+  }
 };
 
 
