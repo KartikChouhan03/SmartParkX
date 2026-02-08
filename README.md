@@ -46,13 +46,6 @@ Ideally suited for smart cities, shopping malls, university campuses, and large 
 - **Sensors**: Ultrasonic / IR Sensors
 - **Computer Vision**: OpenCV, Tesseract OCR (Future: YOLO)
 
-## 📸 Screenshots
-
-_(Add your application screenshots here)_
-
-|                                   Admin Dashboard                                    |                                User View                                 |
-| :----------------------------------------------------------------------------------: | :----------------------------------------------------------------------: |
-| ![Admin Dashboard](https://via.placeholder.com/600x300?text=Admin+Dashboard+Preview) | ![User View](https://via.placeholder.com/600x300?text=User+View+Preview) |
 
 ## 🏗️ Installation & Setup
 
