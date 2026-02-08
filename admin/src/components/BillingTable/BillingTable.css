@@ -1,0 +1,95 @@
+/* BillingTable.css */
+
+.billing-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+.billing-card .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+}
+
+.billing-card .card-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.billing-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.billing-table th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 12px 12px 12px;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.billing-table td {
+    padding: 16px 12px;
+    font-size: 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-default);
+    vertical-align: middle;
+}
+
+.billing-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status Badges */
+span.status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+span.status.pending {
+    background-color: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(153, 57, 85, 0.1);
+    /* Subtle border for contrast */
+}
+
+span.status.paid {
+    background-color: var(--success-bg);
+    color: var(--success);
+    border: 1px solid rgba(34, 197, 94, 0.1);
+}
+
+/* Action Button */
+.mark-paid {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    background: var(--primary);
+    color: white;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.mark-paid:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}

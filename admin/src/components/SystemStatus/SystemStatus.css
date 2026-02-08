@@ -1,0 +1,208 @@
+/* ===============================
+   System Status Panel
+   =============================== */
+
+.system-status {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.system-status:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.system-status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.system-status-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.refresh-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: color 0.2s, background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.refresh-btn:hover:not(:disabled) {
+    color: var(--primary);
+    background-color: var(--bg-surface-muted);
+}
+
+.refresh-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.refresh-btn.spinning {
+    animation: spin 1s linear infinite;
+    color: var(--primary);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== Status List ===== */
+.status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    margin: 0 -12px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.status-item:hover {
+    background-color: var(--bg-surface-muted);
+}
+
+/* Left side */
+.status-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Dot indicator */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    position: relative;
+}
+
+/* Pulse effect for dots */
+.status-dot::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* Status text */
+.status-text {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+/* ===== Status Types ===== */
+.status-success {
+    color: var(--success);
+}
+
+.status-dot.status-success {
+    background-color: var(--success);
+}
+
+.status-dot.status-success::after {
+    background-color: var(--success);
+}
+
+.status-text.status-success {
+    background-color: var(--success-bg);
+    color: var(--success-dark, #14532d);
+    /* Fallback or derive from success */
+}
+
+/* Note: Adding manual dark variants for text on bg-light if not in index.css yet, 
+   but ideally we use semantic ones if available. 
+   Using direct hex for text readability on light bg based on common patterns 
+   or re-using base color if readable. 
+   Let's stick to base color for now but maybe darker. */
+
+.status-warning {
+    color: var(--warning);
+}
+
+.status-dot.status-warning {
+    background-color: var(--warning);
+}
+
+.status-dot.status-warning::after {
+    background-color: var(--warning);
+}
+
+.status-text.status-warning {
+    background-color: var(--warning-bg);
+    color: #92400e;
+    /* Darker warning for text visibility */
+}
+
+.status-danger {
+    color: var(--danger);
+}
+
+.status-dot.status-danger {
+    background-color: var(--danger);
+}
+
+.status-dot.status-danger::after {
+    background-color: var(--danger);
+}
+
+.status-text.status-danger {
+    background-color: var(--danger-bg);
+    color: #9f1239;
+    /* Darker danger for text visibility */
+}

@@ -1,0 +1,157 @@
+.system-page {
+    padding: var(--space-xl);
+}
+
+/* ===== Header ===== */
+.system-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.system-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* ===== Health Grid ===== */
+.health-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+    margin: var(--space-lg) 0;
+}
+
+.health-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.health-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.health-label {
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.health-status {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Semantic Card Borders/Accents */
+.health-card.healthy {
+    border-left: 4px solid var(--success);
+}
+
+.health-card.healthy .health-status {
+    color: var(--success);
+}
+
+.health-card.warning {
+    border-left: 4px solid var(--warning);
+}
+
+.health-card.warning .health-status {
+    color: var(--warning);
+}
+
+.health-card.danger {
+    border-left: 4px solid var(--danger);
+}
+
+.health-card.danger .health-status {
+    color: var(--danger);
+}
+
+/* ===== Logs Table ===== */
+.logs-table-wrapper {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.logs-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.logs-table thead {
+    background: var(--bg-surface-muted);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.logs-table th,
+.logs-table td {
+    padding: 16px 20px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.logs-table th {
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.logs-table td {
+    color: var(--text-primary);
+}
+
+.logs-table tr:not(:last-child) {
+    border-bottom: 1px solid var(--border-muted);
+}
+
+.logs-table tr:hover td {
+    background-color: var(--bg-surface-muted);
+}
+
+/* ===== Severity Badges ===== */
+.severity {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.severity.info {
+    background: rgba(96, 150, 186, 0.15);
+    /* var(--primary) with opacity */
+    color: var(--primary);
+    border: 1px solid rgba(96, 150, 186, 0.2);
+}
+
+.severity.warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.severity.critical {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(153, 57, 85, 0.2);
+}

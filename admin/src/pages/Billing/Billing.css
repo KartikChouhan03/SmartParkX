@@ -1,0 +1,36 @@
+/* ===============================
+   Billing Page – SmartParkX
+   =============================== */
+
+.billing-page {
+    padding: var(--space-xl);
+    background: var(--bg-app);
+}
+
+/* ===== Page Header ===== */
+.billing-header {
+    margin-bottom: var(--space-xl);
+}
+
+.billing-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.billing-header p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* ===============================
+   ANALYTICS ROW
+   =============================== */
+
+.billing-analytics {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}

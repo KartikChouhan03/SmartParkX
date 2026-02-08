@@ -3,3 +3,16 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
+
+.dashboard-lower {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.dashboard-right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

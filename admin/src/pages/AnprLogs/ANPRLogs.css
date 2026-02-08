@@ -1,0 +1,133 @@
+/* ===============================
+   ANPR Logs – Professional Styling
+   =============================== */
+
+.anpr-page {
+    padding: var(--space-xl);
+}
+
+/* ===== Header ===== */
+.anpr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--space-lg);
+}
+
+.anpr-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.anpr-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* ===== Filters ===== */
+.anpr-filters {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.anpr-filters select {
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-default);
+    background: var(--bg-surface);
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: pointer;
+    outline: none;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.anpr-filters select:hover {
+    border-color: var(--border-muted);
+}
+
+.anpr-filters select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+/* ===== Table ===== */
+.anpr-table-wrapper {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.anpr-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.anpr-table thead {
+    background: var(--bg-surface-muted);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.anpr-table th,
+.anpr-table td {
+    padding: 16px 20px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.anpr-table th {
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.anpr-table td {
+    color: var(--text-primary);
+}
+
+.anpr-table tr:not(:last-child) {
+    border-bottom: 1px solid var(--border-muted);
+}
+
+.anpr-table tr:hover td {
+    background-color: var(--bg-surface-muted);
+}
+
+/* ===== Status Badges ===== */
+.status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* Active / Warning */
+.status.active {
+    background: var(--warning-bg);
+    color: var(--warning);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* Completed / Success */
+.status.completed {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+/* Unpaid / Danger */
+.status.unpaid {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(153, 57, 85, 0.2);
+}

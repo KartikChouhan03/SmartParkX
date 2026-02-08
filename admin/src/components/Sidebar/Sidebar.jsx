@@ -42,7 +42,7 @@ export default function Sidebar() {
           <span>Parking Slots</span>
         </NavLink>
 
-        <NavLink to="/anpr" className="sidebar-link">
+        <NavLink to="/anpr-logs" className="sidebar-link">
           <ScanLine size={20} />
           <span>ANPR Logs</span>
         </NavLink>
@@ -54,7 +54,7 @@ export default function Sidebar() {
           <span>Billing</span>
         </NavLink>
 
-        <NavLink to="/logs" className="sidebar-link">
+        <NavLink to="/system-logs" className="sidebar-link">
           <FileText size={20} />
           <span>System Logs</span>
         </NavLink>

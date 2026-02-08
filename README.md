@@ -1,166 +1,138 @@
-# SmartParkX  Smart Parking Management System
+# SmartParkX - Intelligent Smart Parking System
 
-SmartParkX is an intelligent, fully automated smart parking system designed to reduce congestion, eliminate manual parking management, and improve user experience using ANPR (Automatic Number Plate Recognition), real-time sensor data, and a web-based dashboard.
+![SmartParkX Banner](https://img.shields.io/badge/SmartParkX-2.0-blue?style=for-the-badge&logo=parking)
 
-The project is currently under active development and aims to simulate a real-world smart parking environment suitable for college major projects, smart city use cases, and IoT-driven automation systems.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![License](https://img.shields.io/github/license/KartikChouhan03/SmartParkX?style=for-the-badge)
 
-📌 Problem Statement
+## 📌 Overview
 
-Traditional parking systems suffer from:
+**SmartParkX** is a fully automated, intelligent parking management system designed to alleviate urban congestion and streamline the parking experience. Leveraging **ANPR (Automatic Number Plate Recognition)**, real-time sensor data, and a robust web-based dashboard, SmartParkX eliminates manual intervention from entry to exit.
 
-Manual slot allocation and monitoring
+Ideally suited for smart cities, shopping malls, university campuses, and large office complexes, this project serves as a comprehensive prototype for modern IoT-driven automation.
 
-Inefficient use of parking space
+## 🚀 Key Features
 
-Time wastage in searching for free slots
+- **Automated Entry & Exit**: Seamless vehicle access control using ANPR technology.
+- **Real-Time Availability**: Live tracking of parking slots via sensor integration.
+- **Smart Billing**: Automated duration tracking and billing generation upon exit.
+- **Admin Dashboard**: Comprehensive control panel for managing slots, users, and viewing logs.
+- **User Interface**: Clean, responsive web interface for users to check availability and payment status.
+- **Security**: Exit barriers open only after successful payment verification.
 
-Revenue leakage due to inaccurate billing
+## 🛠️ Tech Stack
 
-Poor scalability in high-traffic areas
+### Frontend
 
-SmartParkX addresses these problems by introducing automation at every step — from entry to exit.
+- **Framework**: [React.js](https://reactjs.org/) (Vite)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **State Management**: Context API
+- **HTTP Client**: Axios
 
-🎯 Project Objectives
+### Backend
 
-Automate vehicle entry and exit using ANPR
+- **Runtime**: [Node.js](https://nodejs.org/)
+- **Framework**: [Express.js](https://expressjs.com/)
+- **Database**: [MongoDB Atlas](https://www.mongodb.com/atlas/database)
+- **Authentication**: JWT (JSON Web Tokens)
 
-Display real-time parking slot availability
+### Hardware / IoT (Prototype)
 
-Auto-confirm parking using slot sensors
+- **Microcontroller**: ESP32
+- **Sensors**: Ultrasonic / IR Sensors
+- **Computer Vision**: OpenCV, Tesseract OCR (Future: YOLO)
 
-Track parking duration accurately
+## 📸 Screenshots
 
-Generate parking bills automatically
+_(Add your application screenshots here)_
 
-Prevent unpaid exits using exit verification
+|                                   Admin Dashboard                                    |                                User View                                 |
+| :----------------------------------------------------------------------------------: | :----------------------------------------------------------------------: |
+| ![Admin Dashboard](https://via.placeholder.com/600x300?text=Admin+Dashboard+Preview) | ![User View](https://via.placeholder.com/600x300?text=User+View+Preview) |
 
-Provide a scalable web-based admin/user interface
+## 🏗️ Installation & Setup
 
-⚙️ System Workflow (Current Design)
+Follow these steps to set up the project locally.
 
-Car arrives at entry gate
-→ ANPR scans and registers the license plate
+### Prerequisites
 
-Available slots displayed
-→ Based on real-time sensor data (Web App + Display Screen)
+- Node.js (v14 or higher)
+- MongoDB Atlas Account (or local MongoDB)
+- Git
 
-User parks in any free slot
-→ Slot sensor detects vehicle and auto-confirms occupancy
+### 1. Clone the Repository
 
-Parking session starts
-→ Time tracking begins from entry scan
+```bash
+git clone https://github.com/KartikChouhan03/SmartParkX.git
+cd SmartParkX
+```
 
-Car leaves the slot
-→ Sensor detects vacancy
+### 2. Backend Setup
 
-Exit gate ANPR scan
-→ Parking duration calculated
-→ Bill generated
-→ Barrier opens only after payment confirmation
+Navigate to the backend directory, install dependencies, and start the server.
 
-This ensures zero manual intervention.
+```bash
+cd backend
+npm install
+```
 
-🧠 Key Features
+**Environment Variables:**
+Create a `.env` file in the `backend` directory:
 
-🚘 Automatic Number Plate Recognition (ANPR)
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
 
-📡 Real-time parking slot monitoring
+Start the backend server:
 
-⏱️ Accurate parking duration tracking
+```bash
+npm run dev
+# Server runs on http://localhost:5000
+```
 
-💰 Automated billing system
+### 3. Frontend Setup
 
-🔐 Exit control based on payment status
+Open a new terminal, navigate to the frontend directory, and start the client.
 
-🌐 Web-based dashboard (Admin/User)
+```bash
+cd frontend
+npm install
+npm run dev
+# App runs on http://localhost:5173
+```
 
-🔄 Fully automated parking lifecycle
+## 🧪 Usage
 
-🛠️ Tech Stack
-Frontend
+1.  **Admin Login**: Access the dashboard to view live slot status and revenue reports.
+2.  **Simulation**: Use the prototype hardware or simulation tools to trigger entry/exit events.
+3.  **User Flow**: Users can see available slots on the display or web app.
 
-React.js
+## 🔮 Future Roadmap
 
-HTML5, CSS3, JavaScript
+- [ ] **Payment Gateway**: Integration with Stripe/Razorpay for online payments.
+- [ ] **Advanced AI**: Implementing YOLO for faster and more accurate license plate detection.
+- [ ] **Mobile App**: React Native application for users.
+- [ ] **Predictive Analytics**: ML models to predict peak parking times.
 
-Context API for state management
+## 🤝 Contributing
 
-Backend
+Contributions are welcome! Please fork the repository and create a pull request for any feature enhancements or bug fixes.
 
-Node.js
+## 📜 License
 
-Express.js
+Distributed under the MIT License. See `LICENSE` for more information.
 
-RESTful APIs
+## 🧑‍💻 Author
 
-Database
+**Kartik**
 
-MongoDB (Atlas)
+- GitHub: [@KartikChouhan03](https://github.com/KartikChouhan03)
 
-Computer Vision & Automation
+---
 
-OpenCV
-
-YOLO (planned for advanced detection)
-
-Tesseract OCR (for ANPR – initial phase)
-
-Hardware (Planned / Prototype)
-
-esp32
-
-Ultrasonic / IR Sensors
-
-Camera (Laptop camera for prototype)
-
-
-⚠️ Note: This project is actively evolving. Features, architecture, and workflows may change as development progresses.
-
-🧪 Use Cases
-
-College campuses
-
-Shopping malls
-
-Office complexes
-
-Smart city infrastructure
-
-Controlled parking facilities
-
-📁 Project Structure (High-Level)
-SmartParkX/
-│
-├── frontend/        # React frontend
-├── backend/         # Node.js + Express APIs
-├── models/          # ML / CV models (ANPR)
-├── hardware/        # Arduino & sensor logic
-├── docs/            # Diagrams, workflow docs
-└── README.md
-
-🚀 Future Enhancements
-
-Online payment gateway integration
-
-Advanced analytics dashboard
-
-AI-based parking demand prediction
-
-Cloud-based camera feeds
-
-Role-based access control
-
-Multi-location parking management
-
-🧑‍💻 Author
-Kartik
-
-
-📜 License
-
-This project is licensed under the MIT License.
-You are free to use, modify, and distribute it with proper attribution.
-
-📌 Disclaimer
-This project is developed for academic and learning purposes.
-It is a prototype-level implementation and not intended for production use.

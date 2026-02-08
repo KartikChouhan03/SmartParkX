@@ -1,0 +1,117 @@
+/* ===============================
+   Slot Card – Professional Static
+   =============================== */
+
+.slot-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 120px;
+    background: var(--bg-surface);
+    border: 1px solid var(--slot-color);
+    /* Static colored border */
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+    cursor: default;
+}
+
+/* Hover Effect */
+.slot-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Custom shadow for depth */
+}
+
+/* ===== Content Layout ===== */
+.slot-content {
+    flex: 1;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Header: ID + Indicator Dot */
+.slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slot-id {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    letter-spacing: -0.5px;
+}
+
+/* Status Indicator Dot (Top Right) */
+.slot-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--slot-color);
+    box-shadow: 0 0 0 4px var(--bg-surface-muted);
+}
+
+/* Footer: Status Text */
+.slot-footer {
+    display: flex;
+    align-items: center;
+}
+
+.slot-status-text {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-secondary);
+}
+
+/* ===== Interactive Glow (Background) ===== */
+.slot-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, var(--slot-color), transparent 70%);
+    opacity: 0.08;
+    z-index: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.slot-card:hover .slot-glow {
+    opacity: 0.15;
+}
+
+/* ===============================
+   Status Variants
+   =============================== */
+
+/* AVAILABLE */
+.slot-card.available {
+    --slot-color: var(--success);
+}
+
+.slot-card.available .slot-status-text {
+    color: var(--success);
+}
+
+/* OCCUPIED */
+.slot-card.occupied {
+    --slot-color: var(--warning);
+}
+
+.slot-card.occupied .slot-status-text {
+    color: var(--warning);
+}
+
+/* SENSOR ISSUE */
+.slot-card.issue {
+    --slot-color: var(--danger);
+}
+
+.slot-card.issue .slot-status-text {
+    color: var(--danger);
+}

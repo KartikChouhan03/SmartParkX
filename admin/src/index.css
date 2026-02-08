@@ -1,53 +1,75 @@
 /* ===============================
    SmartParkX Admin – Design System
+   Light Mode (Primary)
    =============================== */
 
 :root {
-  /* ===== Backgrounds ===== */
-  --color-bg-dark: #0a1832;
-  /* prussian blue */
-  --color-bg: #1a3d63;
-  /* yale blue */
-  --color-bg-light: #f6fafd;
-  /* platinum */
+  /* =================================
+     BASE PALETTE (DO NOT USE DIRECTLY)
+     ================================= */
+  --prussian-blue: #0a1832;
+  --yale-blue: #1a3d63;
+  --steel-blue: #6096ba;
+  --platinum: #f6fafd;
+  --vintage-berry: #993955;
 
-  /* ===== Primary / Accent ===== */
-  --color-primary-dark: #4a7fa3;
-  --color-primary: #6096ba;
-  /* steel blue */
-  --color-primary-light: #7fb3d5;
+  /* =================================
+     SEMANTIC BACKGROUNDS (LIGHT MODE)
+     ================================= */
+  --bg-app: var(--platinum);
+  /* whole app background */
+  --bg-surface: #ffffff;
+  /* cards, panels */
+  --bg-surface-muted: #f3f7fb;
+  /* navbar, subtle sections */
+  --bg-sidebar: var(--prussian-blue);
 
-  /* ===== Text ===== */
-  --color-text-primary: #f6fafd;
-  --color-text-secondary: #cfd8e3;
-  --color-text-muted: #9aa7b2;
-  --color-text-dark: #0a1832;
+  /* =================================
+     SEMANTIC TEXT (LIGHT MODE)
+     ================================= */
+  --text-primary: #0a1832;
+  /* main text */
+  --text-secondary: #425a70;
+  /* secondary text */
+  --text-muted: #7b8a97;
+  /* helper text */
+  --text-inverse: #f6fafd;
+  /* text on dark surfaces */
 
-  /* ===== Borders & Dividers ===== */
-  --color-border-dark: #132b4a;
-  --color-border: #1f4a7c;
-  --color-border-light: #dce6ef;
+  /* =================================
+     BORDERS & DIVIDERS
+     ================================= */
+  --border-default: #dce6ef;
+  --border-muted: #e9eff5;
+  --border-dark: #132b4a;
 
-  /* ===== Status Colors ===== */
-  --color-success: #22c55e;
-  /* correct choice */
-  --color-success-light: #dcfce7;
-  --color-success-dark: #15803d;
+  /* =================================
+     ACCENT / PRIMARY
+     ================================= */
+  --primary: var(--steel-blue);
+  --primary-light: #7fb3d5;
+  --primary-dark: #4a7fa3;
 
-  --color-warning: #f59e0b;
-  /* correct choice */
-  --color-warning-light: #fef3c7;
-  --color-warning-dark: #b45309;
+  /* =================================
+     STATUS COLORS (SEMANTIC)
+     ================================= */
+  --success: #22c55e;
+  --success-bg: #dcfce7;
 
-  --color-danger: #993955;
-  /* vintage berry */
-  --color-danger-light: #f2c6d3;
-  --color-danger-dark: #6e253b;
+  --warning: #f59e0b;
+  --warning-bg: #fef3c7;
 
-  /* ===== Font ===== */
+  --danger: var(--vintage-berry);
+  --danger-bg: #f2c6d3;
+
+  /* =================================
+     TYPOGRAPHY
+     ================================= */
   --font-main: 'Inter', system-ui, sans-serif;
 
-  /* ===== Spacing ===== */
+  /* =================================
+     SPACING
+     ================================= */
   --space-2xs: 2px;
   --space-xs: 4px;
   --space-sm: 8px;
@@ -55,14 +77,18 @@
   --space-lg: 24px;
   --space-xl: 32px;
 
-  /* ===== Radius ===== */
+  /* =================================
+     RADIUS
+     ================================= */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
 
-  /* ===== Shadows ===== */
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.15);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.2);
+  /* =================================
+     SHADOWS
+     ================================= */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* ===== Global Reset ===== */
@@ -73,7 +99,7 @@
 }
 
 body {
-  background-color: var(--color-bg-light);
-  color: var(--color-text-primary);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
   font-family: var(--font-main);
 }

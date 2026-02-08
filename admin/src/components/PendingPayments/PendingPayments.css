@@ -1,0 +1,50 @@
+/* PendingPayments.css */
+
+.pending-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+    min-height: 220px;
+}
+
+.pending-card .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+}
+
+.pending-card .card-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.pending-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pending-list li {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 0.8fr;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--border-default);
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.pending-list li:last-child {
+    border-bottom: none;
+}
+
+.pending-list .amount {
+    font-weight: 600;
+    color: var(--danger);
+    text-align: right;
+}

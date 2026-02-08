@@ -1,13 +1,21 @@
+/* ===============================
+   KPI Card 
+   =============================== */
+
 .kpi-card {
     position: relative;
     display: flex;
     align-items: stretch;
     height: 110px;
-    background: var(--color-text-primary);
+
+    /* surface token */
+    background: var(--bg-surface);
+
     border-radius: 14px;
     overflow: hidden;
-    border: 1px solid rgba(10, 24, 50, 0.08);
     isolation: isolate;
+
+    border: 1px solid var(--border-default);
     transition: transform 0.2s ease;
 }
 
@@ -32,9 +40,9 @@
 }
 
 .kpi-title {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--text-muted);
     margin-bottom: 6px;
     text-transform: uppercase;
     letter-spacing: 0.6px;
@@ -43,7 +51,7 @@
 .kpi-value {
     font-size: 28px;
     font-weight: 700;
-    color: var(--color-primary-dark);
+    color: var(--text-primary);
 }
 
 /* ===== Glow Effects (VERY subtle) ===== */
@@ -74,19 +82,19 @@
     opacity: 0.06;
 }
 
-/* ===== Accent Variants ===== */
+/* ===== Accent Variants (Semantic) ===== */
 .kpi-primary {
-    --kpi-accent: var(--color-primary);
+    --kpi-accent: var(--primary);
 }
 
 .kpi-success {
-    --kpi-accent: var(--color-success);
+    --kpi-accent: var(--success);
 }
 
 .kpi-warning {
-    --kpi-accent: var(--color-warning);
+    --kpi-accent: var(--warning);
 }
 
 .kpi-danger {
-    --kpi-accent: var(--color-danger);
+    --kpi-accent: var(--danger);
 }

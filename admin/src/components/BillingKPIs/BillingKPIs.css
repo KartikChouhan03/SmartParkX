@@ -1,0 +1,66 @@
+/* BillingKPIs.css */
+
+.billing-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}
+
+.kpi-card {
+    position: relative;
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Ensures border-radius is respected */
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.kpi-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+}
+
+.kpi-card h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.kpi-card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* KPI Accent (LEFT BAR) - Using specific selectors to ensure override */
+.kpi-card.kpi-primary {
+    border-left: 4px solid var(--primary);
+}
+
+.kpi-card.kpi-success {
+    border-left: 4px solid var(--success);
+}
+
+.kpi-card.kpi-warning {
+    border-left: 4px solid var(--warning);
+}
+
+.kpi-card.kpi-danger {
+    border-left: 4px solid var(--danger);
+}
