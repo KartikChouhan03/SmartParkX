@@ -1,114 +1,111 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./RecentActivity.css";
-import {
-  Car,
-  LogIn,
-  LogOut,
-  ChevronRight,
-  X,
-  Clock,
-  MapPin,
-  User,
-  Phone,
-} from "lucide-react";
-
-import { VEHICLE_LOGS_DATA } from "../../data/mockData";
-
-// Slice the first 6 items for the widget
-const VEHICLE_LOGS = VEHICLE_LOGS_DATA.slice(0, 6);
-
+import { LogIn, LogOut, ChevronRight, X, Car, CreditCard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import api from "../../lib/adminApi.jsx";
 
 export default function RecentActivity() {
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [logs, setLogs] = useState([]);
+  const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
+  const fetchLogs = async () => {
+    try {
+      const res = await api.get("/admin/dashboard/recent-activity");
+      setLogs(res.data.slice(0, 6)); // only first 6 for widget
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const formatTime = (date) => {
+    return new Date(date).toLocaleString();
+  };
 
   return (
     <div className="recent-activity">
-      {/* Header */}
       <div className="activity-header">
         <h3 className="activity-title">Vehicle Logs</h3>
         <span className="live-badge">Live</span>
       </div>
 
-      {/* List */}
       <div className="activity-list-container">
         <div className="activity-list">
-          {VEHICLE_LOGS.map((item) => (
-            <div
-              key={item.id}
-              className="activity-row"
-              onClick={() => setSelectedVehicle(item)} // Make whole row clickable
-            >
-              {/* Icon based on Entry/Exit */}
+          {logs.map((item) => {
+            const isEntry = item.status === "ACTIVE";
+
+            return (
               <div
-                className={`activity-icon ${item.type === "ENTRY" ? "icon-entry" : "icon-exit"}`}
+                key={item._id}
+                className="activity-row"
+                onClick={() => setSelected(item)}
               >
-                {item.type === "ENTRY" ? (
-                  <LogIn size={18} />
-                ) : (
-                  <LogOut size={18} />
-                )}
-              </div>
-
-              {/* Info */}
-              <div className="activity-info">
-                <div className="activity-plate">{item.plate}</div>
-                <div className="activity-meta">
-                  <span className={`status-pill ${item.type.toLowerCase()}`}>
-                    {item.type}
-                  </span>
-                  <span className="dot-separator">•</span>
-                  <span className="activity-time">{item.time}</span>
+                <div
+                  className={`activity-icon ${
+                    isEntry ? "icon-entry" : "icon-exit"
+                  }`}
+                >
+                  {isEntry ? <LogIn size={18} /> : <LogOut size={18} />}
                 </div>
-              </div>
 
-              {/* Arrow */}
-              <button className="btn-details">
-                <ChevronRight size={18} />
-              </button>
-            </div>
-          ))}
+                <div className="activity-info">
+                  <div className="activity-plate">{item.vehicleNumber}</div>
+                  <div className="activity-meta">
+                    <span
+                      className={`status-pill ${isEntry ? "entry" : "exit"}`}
+                    >
+                      {isEntry ? "ENTRY" : "EXIT"}
+                    </span>
+                    <span className="dot-separator">•</span>
+                    <span className="activity-time">
+                      {formatTime(item.entryTime)}
+                    </span>
+                  </div>
+                </div>
+
+                <button className="btn-details">
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Footer */}
       <div className="activity-footer">
         <button className="view-all-btn" onClick={() => navigate("/anpr-logs")}>
           View All Logs
         </button>
       </div>
 
-      {/* ===========================
-          POPUP MODAL 
-         =========================== */}
-      {selectedVehicle && (
-        <div className="modal-overlay" onClick={() => setSelectedVehicle(null)}>
+      {selected && (
+        <div className="modal-overlay" onClick={() => setSelected(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            {/* Modal Header */}
             <div className="modal-header">
-              <h3>Vehicle Details</h3>
-              <button
-                className="close-btn"
-                onClick={() => setSelectedVehicle(null)}
-              >
+              <h3>Session Details</h3>
+              <button className="close-btn" onClick={() => setSelected(null)}>
                 <X size={20} />
               </button>
             </div>
 
-            {/* Modal Body */}
             <div className="modal-body">
-              {/* Car Image + Plate */}
+              {/* Vehicle Summary */}
               <div className="vehicle-summary">
-                <img
-                  src={selectedVehicle.img}
-                  alt="Car"
-                  className="vehicle-img"
-                />
+                <div className="vehicle-icon-placeholder">
+                  <Car size={40} />
+                </div>
                 <div className="vehicle-identity">
-                  <h2>{selectedVehicle.plate}</h2>
-                  <span className={`status-badge ${selectedVehicle.status}`}>
-                    {selectedVehicle.status === "active"
+                  <h2>{selected.vehicleNumber}</h2>
+                  <span
+                    className={`status-badge ${
+                      selected.status === "ACTIVE" ? "active" : "completed"
+                    }`}
+                  >
+                    {selected.status === "ACTIVE"
                       ? "Currently Parked"
                       : "Checked Out"}
                   </span>
@@ -118,44 +115,51 @@ export default function RecentActivity() {
               {/* Details Grid */}
               <div className="details-grid">
                 <div className="detail-item">
-                  <User size={16} className="detail-icon" />
+                  <LogIn size={16} className="detail-icon" />
                   <div>
-                    <span className="detail-label">Owner</span>
-                    <div className="detail-value">{selectedVehicle.owner}</div>
-                  </div>
-                </div>
-
-                <div className="detail-item">
-                  <Phone size={16} className="detail-icon" />
-                  <div>
-                    <span className="detail-label">Contact</span>
-                    <div className="detail-value">{selectedVehicle.phone}</div>
-                  </div>
-                </div>
-
-                <div className="detail-item">
-                  <Clock size={16} className="detail-icon" />
-                  <div>
-                    <span className="detail-label">
-                      {selectedVehicle.type === "ENTRY"
-                        ? "Entry Time"
-                        : "Duration"}
-                    </span>
+                    <span className="detail-label">Entry Time</span>
                     <div className="detail-value">
-                      {selectedVehicle.type === "ENTRY"
-                        ? selectedVehicle.time
-                        : selectedVehicle.duration}
+                      {formatTime(selected.entryTime)}
+                    </div>
+                  </div>
+                </div>
+
+                {selected.exitTime && (
+                  <div className="detail-item">
+                    <LogOut size={16} className="detail-icon" />
+                    <div>
+                      <span className="detail-label">Exit Time</span>
+                      <div className="detail-value">
+                        {formatTime(selected.exitTime)}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="detail-item">
+                  <CreditCard size={16} className="detail-icon" />
+                  <div>
+                    <span className="detail-label">Payment Status</span>
+                    <div
+                      className="detail-value"
+                      style={{
+                        color:
+                          selected.paymentStatus === "PAID"
+                            ? "var(--success)"
+                            : "var(--danger)",
+                      }}
+                    >
+                      {selected.paymentStatus || "PENDING"}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Modal Footer */}
             <div className="modal-footer">
               <button
                 className="btn-primary full-width"
-                onClick={() => setSelectedVehicle(null)}
+                onClick={() => setSelected(null)}
               >
                 Close
               </button>

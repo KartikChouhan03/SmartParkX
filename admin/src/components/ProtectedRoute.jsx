@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useAdminAuth } from "../context/AdminAuthContext";
 
 export default function ProtectedRoute() {
-  const token = sessionStorage.getItem("adminToken");
-  return token ? <Outlet /> : <Navigate to="/login" />;
+  const { adminToken } = useAdminAuth();
+  return adminToken ? <Outlet /> : <Navigate to="/login" replace />;
 }

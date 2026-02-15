@@ -94,3 +94,18 @@ exports.getDashboardKpis = async (req, res) => {
         res.status(500).json({ error: "Failed to fetch dashboard KPIs" });
     }
 };
+
+
+exports.getRecentActivity = async (req, res) => {
+  try {
+    const sessions = await ParkingSession.find()
+      .sort({ entryTime: -1 })
+      .limit(10)
+      .select("vehicleNumber entryTime exitTime status paymentStatus");
+
+    res.json(sessions);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch recent activity" });
+  }
+};

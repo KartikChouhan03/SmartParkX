@@ -22,7 +22,7 @@ const parkingSessionSchema = new mongoose.Schema({
   paymentStatus: {
     type: String,
     enum: ["PENDING", "PAID"],
-    default: null
+    default: "PENDING"
   }
 });
 

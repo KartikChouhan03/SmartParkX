@@ -1,34 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./BillingTable.css";
+import api from "../../lib/adminApi"; 
 
 export default function BillingTable() {
-  const [records, setRecords] = React.useState([
-    {
-      id: 1,
-      plate: "MH12AB1234",
-      entry: "10:12 AM",
-      exit: "—",
-      duration: "2h 15m",
-      amount: "₹120",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      plate: "KA01XY7788",
-      entry: "09:00 AM",
-      exit: "11:10 AM",
-      duration: "2h 10m",
-      amount: "₹140",
-      status: "Paid",
-    },
-  ]);
+  const [records, setRecords] = useState([]);
 
-  const handleMarkPaid = (id) => {
-    setRecords((prevRecords) =>
-      prevRecords.map((record) =>
-        record.id === id ? { ...record, status: "Paid" } : record,
-      ),
-    );
+  useEffect(() => {
+    fetchRecords();
+  }, []);
+
+  const fetchRecords = async () => {
+    try {
+      const res = await api.get("/admin/billing/records");
+      setRecords(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const markPaid = async (id) => {
+    try {
+      await api.patch(`/admin/billing/${id}/mark-paid`);
+      fetchRecords();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const formatDuration = (entry, exit) => {
+    if (!exit) return "--";
+    const ms = new Date(exit) - new Date(entry);
+    const mins = Math.floor(ms / 60000);
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${h}h ${m}m`;
   };
 
   return (
@@ -51,24 +56,27 @@ export default function BillingTable() {
         </thead>
 
         <tbody>
-          {records.map((record) => (
-            <tr key={record.id}>
-              <td>{record.plate}</td>
-              <td>{record.entry}</td>
-              <td>{record.exit}</td>
-              <td>{record.duration}</td>
-              <td>{record.amount}</td>
+          {records.map((r) => (
+            <tr key={r._id}>
+              <td>{r.vehicleNumber}</td>
+              <td>{new Date(r.entryTime).toLocaleString()}</td>
               <td>
-                <span className={`status ${record.status.toLowerCase()}`}>
-                  {record.status}
+                {r.exitTime ? new Date(r.exitTime).toLocaleString() : "--"}
+              </td>
+              <td>{formatDuration(r.entryTime, r.exitTime)}</td>
+              <td>₹{r.billAmount}</td>
+              <td>
+                <span
+                  className={`status ${
+                    r.paymentStatus === "PAID" ? "paid" : "pending"
+                  }`}
+                >
+                  {r.paymentStatus}
                 </span>
               </td>
               <td>
-                {record.status === "Pending" ? (
-                  <button
-                    className="mark-paid"
-                    onClick={() => handleMarkPaid(record.id)}
-                  >
+                {r.paymentStatus === "PENDING" ? (
+                  <button className="mark-paid" onClick={() => markPaid(r._id)}>
                     Mark Paid
                   </button>
                 ) : (

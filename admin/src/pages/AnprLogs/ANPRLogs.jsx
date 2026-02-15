@@ -1,57 +1,84 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ANPRLogs.css";
 import {
   Search,
-  Filter,
   Eye,
   X,
-  AlertCircle,
-  User,
-  Phone,
   Clock,
   MapPin,
+  Car,
+  LogIn,
+  LogOut,
+  CreditCard,
 } from "lucide-react";
-import { VEHICLE_LOGS_DATA } from "../../data/mockData";
+import api from "../../lib/adminApi";
 
 export default function ANPRLogs() {
+  const [logs, setLogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [gateFilter, setGateFilter] = useState("All Gates");
   const [dateFilter, setDateFilter] = useState("Today");
   const [statusFilter, setStatusFilter] = useState("All Status");
-  const [selectedLog, setSelectedLog] = useState(null); // For Modal
+  const [selectedLog, setSelectedLog] = useState(null);
 
-  // Filter Logic
-  const filteredLogs = VEHICLE_LOGS_DATA.filter((log) => {
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
+  const fetchLogs = async () => {
+    try {
+      const res = await api.get("/admin/anpr/logs");
+
+      const formatted = res.data.map((session) => {
+        const type = session.status === "ACTIVE" ? "ENTRY" : "EXIT";
+
+        let uiStatus = "active";
+        if (session.status === "COMPLETED") {
+          uiStatus = session.paymentStatus === "PAID" ? "completed" : "flagged";
+        }
+
+        return {
+          _id: session._id,
+          plate: session.vehicleNumber,
+          type,
+          entryTime: session.entryTime,
+          exitTime: session.exitTime,
+          status: uiStatus,
+          paymentStatus: session.paymentStatus,
+        };
+      });
+
+      setLogs(formatted);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleString();
+  };
+
+  const filteredLogs = logs.filter((log) => {
     const matchesSearch = log.plate
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
-    // Gate Filter
     const matchesGate =
       gateFilter === "All Gates" ||
       (gateFilter === "Entry" && log.type === "ENTRY") ||
-      (gateFilter === "Exit" && log.type === "EXIT") ||
-      log.gate === gateFilter;
+      (gateFilter === "Exit" && log.type === "EXIT");
 
-    // Date Filter (Mock logic as data is static "Today"/"Yesterday")
-    const matchesDate =
-      dateFilter === "All Dates" ||
-      dateFilter === log.date ||
-      (dateFilter === "Today" && log.date === "Today") ||
-      (dateFilter === "Yesterday" &&
-        (log.date === "Yesterday" || log.date === "11 Sep"));
-
-    // Status Filter
     const matchesStatus =
       statusFilter === "All Status" ||
-      log.status.toLowerCase() === statusFilter.toLowerCase();
+      (statusFilter === "active" && log.status === "active") ||
+      (statusFilter === "completed" && log.status === "completed") ||
+      (statusFilter === "flagged" && log.status === "flagged");
 
-    return matchesSearch && matchesGate && matchesDate && matchesStatus;
+    return matchesSearch && matchesGate && matchesStatus;
   });
 
   return (
     <div className="anpr-page">
-      {/* ===== Header ===== */}
       <div className="anpr-header">
         <div>
           <h1 className="anpr-title">ANPR Audit Logs</h1>
@@ -60,7 +87,6 @@ export default function ANPRLogs() {
           </p>
         </div>
 
-        {/* Search & Filter Toolbar */}
         <div className="anpr-controls">
           <select
             className="control-select"
@@ -70,16 +96,6 @@ export default function ANPRLogs() {
             <option>All Gates</option>
             <option value="Entry">Entry</option>
             <option value="Exit">Exit</option>
-          </select>
-
-          <select
-            className="control-select"
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
-          >
-            <option>All Dates</option>
-            <option>Today</option>
-            <option>Yesterday</option>
           </select>
 
           <select
@@ -94,7 +110,7 @@ export default function ANPRLogs() {
           </select>
 
           <div className="search-box full-width">
-            <Search size={16} className="text-muted" />
+            <Search size={16} />
             <input
               type="text"
               placeholder="Search Plate Number..."
@@ -105,7 +121,6 @@ export default function ANPRLogs() {
         </div>
       </div>
 
-      {/* ===== Table ===== */}
       <div className="anpr-table-wrapper">
         <table className="anpr-table">
           <thead>
@@ -120,34 +135,39 @@ export default function ANPRLogs() {
 
           <tbody>
             {filteredLogs.map((log) => (
-              <tr
-                key={log.id}
-                onClick={() => {
-                  console.log("Clicked row:", log);
-                  setSelectedLog(log);
-                }}
-              >
+              <tr key={log._id} onClick={() => setSelectedLog(log)}>
                 <td>
                   <span className="plate-cell">{log.plate}</span>
                 </td>
+
                 <td>
                   <span className="gate-type">{log.type}</span>
                 </td>
+
                 <td>
                   <div className="gate-info">
-                    <span className="gate-name">{log.time}</span>
-                    <span className="gate-type" style={{ marginTop: 2 }}>
-                      {log.date}
+                    <span className="gate-name">
+                      {formatDate(
+                        log.type === "ENTRY" ? log.entryTime : log.exitTime,
+                      )}
                     </span>
                   </div>
                 </td>
+
                 <td>
                   <span
-                    className={`status ${log.status === "completed" ? "completed" : log.status === "flagged" ? "unpaid" : "active"}`}
+                    className={`status ${
+                      log.status === "completed"
+                        ? "completed"
+                        : log.status === "flagged"
+                          ? "unpaid"
+                          : "active"
+                    }`}
                   >
                     {log.status === "flagged" ? "Unpaid" : log.status}
                   </span>
                 </td>
+
                 <td>
                   <Eye size={18} className="action-icon" />
                 </td>
@@ -157,13 +177,11 @@ export default function ANPRLogs() {
         </table>
       </div>
 
-      {/* ===== Enhanced Detail Modal ===== */}
       {selectedLog && (
         <div className="modal-overlay" onClick={() => setSelectedLog(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            {/* Modal Header */}
             <div className="modal-header">
-              <h3>Vehicle Details</h3>
+              <h3>Session Details</h3>
               <button
                 className="close-btn"
                 onClick={() => setSelectedLog(null)}
@@ -172,46 +190,64 @@ export default function ANPRLogs() {
               </button>
             </div>
 
-            {/* Modal Body */}
             <div className="modal-body">
-              {/* Car Image + Plate */}
+              {/* Vehicle Summary */}
               <div className="vehicle-summary">
-                <img src={selectedLog.img} alt="Car" className="vehicle-img" />
+                <div className="vehicle-icon-placeholder">
+                  <Car size={40} />
+                </div>
                 <div className="vehicle-identity">
                   <h2>{selectedLog.plate}</h2>
                   <span
-                    className={`status-badge ${selectedLog.status === "active" ? "active" : "completed"}`}
+                    className={`status-badge ${
+                      selectedLog.status === "active" ? "active" : "completed"
+                    }`}
                   >
-                    {selectedLog.status}
+                    {selectedLog.status === "active"
+                      ? "Currently Parked"
+                      : "Checked Out"}
                   </span>
-                  <div
-                    style={{
-                      marginTop: 4,
-                      fontSize: 12,
-                      color: "var(--text-muted)",
-                    }}
-                  ></div>
                 </div>
               </div>
 
               {/* Details Grid */}
               <div className="details-grid">
                 <div className="detail-item">
-                  <User size={16} className="detail-icon" />
+                  <LogIn size={16} className="detail-icon" />
                   <div>
-                    <span className="detail-label">Owner</span>
+                    <span className="detail-label">Entry Time</span>
                     <div className="detail-value">
-                      {selectedLog.owner || "Unknown"}
+                      {formatDate(selectedLog.entryTime)}
                     </div>
                   </div>
                 </div>
 
+                {selectedLog.exitTime && (
+                  <div className="detail-item">
+                    <LogOut size={16} className="detail-icon" />
+                    <div>
+                      <span className="detail-label">Exit Time</span>
+                      <div className="detail-value">
+                        {formatDate(selectedLog.exitTime)}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="detail-item">
-                  <Phone size={16} className="detail-icon" />
+                  <CreditCard size={16} className="detail-icon" />
                   <div>
-                    <span className="detail-label">Contact</span>
-                    <div className="detail-value">
-                      {selectedLog.phone || "--"}
+                    <span className="detail-label">Payment Status</span>
+                    <div
+                      className="detail-value"
+                      style={{
+                        color:
+                          selectedLog.paymentStatus === "PAID"
+                            ? "var(--success)"
+                            : "var(--danger)",
+                      }}
+                    >
+                      {selectedLog.paymentStatus || "PENDING"}
                     </div>
                   </div>
                 </div>
@@ -219,36 +255,19 @@ export default function ANPRLogs() {
                 <div className="detail-item">
                   <MapPin size={16} className="detail-icon" />
                   <div>
-                    <span className="detail-label">Gate Info</span>
-                    <div className="detail-value">
-                      {selectedLog.gate} ({selectedLog.type})
-                    </div>
-                  </div>
-                </div>
-
-                <div className="detail-item">
-                  <Clock size={16} className="detail-icon" />
-                  <div>
-                    <span className="detail-label">
-                      {selectedLog.type === "ENTRY" ? "Entry Time" : "Duration"}
-                    </span>
-                    <div className="detail-value">
-                      {selectedLog.type === "ENTRY"
-                        ? `${selectedLog.time}, ${selectedLog.date}`
-                        : selectedLog.duration || "N/A"}
-                    </div>
+                    <span className="detail-label">Gate / Type</span>
+                    <div className="detail-value">{selectedLog.type}</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Modal Footer */}
             <div className="modal-footer">
               <button
                 className="btn-primary full-width"
                 onClick={() => setSelectedLog(null)}
               >
-                Close Details
+                Close
               </button>
             </div>
           </div>

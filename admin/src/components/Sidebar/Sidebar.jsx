@@ -11,8 +11,10 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import logo from "../../assets/logo.png";
+import { useAdminAuth } from "../../context/AdminAuthContext";
 
 export default function Sidebar() {
+  const { logout } = useAdminAuth();
   return (
     <aside className="sidebar">
       {/* Brand */}
@@ -62,7 +64,7 @@ export default function Sidebar() {
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <button className="logout-btn">
+        <button className="logout-btn" onClick={logout}>
           <LogOut size={18} />
           <span>Sign Out</span>
         </button>

@@ -10,6 +10,13 @@ export function AdminAuthProvider({ children }) {
     sessionStorage.getItem("adminToken"),
   );
 
+  const login = (user, token) => {
+    setAdminUser(user);
+    setAdminToken(token);
+    sessionStorage.setItem("adminUser", JSON.stringify(user));
+    sessionStorage.setItem("adminToken", token);
+  };
+
   const logout = () => {
     setAdminUser(null);
     setAdminToken(null);
@@ -18,7 +25,7 @@ export function AdminAuthProvider({ children }) {
   };
 
   return (
-    <AdminAuthContext.Provider value={{ adminUser, adminToken, logout }}>
+    <AdminAuthContext.Provider value={{ adminUser, adminToken, login, logout }}>
       {children}
     </AdminAuthContext.Provider>
   );

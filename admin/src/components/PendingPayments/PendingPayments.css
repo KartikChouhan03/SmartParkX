@@ -1,4 +1,12 @@
 /* PendingPayments.css */
+.empty-state {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-size: 14px;
+    background-color: var(--bg-surface-muted);
+    border-radius: var(--radius-md);
+}
 
 .pending-card {
     background: var(--bg-surface);

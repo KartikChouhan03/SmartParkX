@@ -1,32 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./PendingPayments.css";
+import api from "../../lib/adminApi";
 
 export default function PendingPayments() {
+  const [pending, setPending] = useState([]);
+
+  useEffect(() => {
+    fetchPending();
+  }, []);
+
+  const fetchPending = async () => {
+    try {
+      const res = await api.get("/admin/billing/pending");
+      setPending(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const formatDuration = (entry, exit) => {
+    const ms = new Date(exit) - new Date(entry);
+    const mins = Math.floor(ms / 60000);
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${h}h ${m}m`;
+  };
+
   return (
     <div className="billing-card pending-card">
       <div className="card-header">
         <h3>Pending Payments</h3>
       </div>
 
-      <ul className="pending-list">
-        <li>
-          <span>MH12AB1234</span>
-          <span>2h 15m</span>
-          <span className="amount">₹120</span>
-        </li>
-
-        <li>
-          <span>KA05EF4321</span>
-          <span>2h 45m</span>
-          <span className="amount">₹160</span>
-        </li>
-
-        <li>
-          <span>DL01CD5678</span>
-          <span>1h 55m</span>
-          <span className="amount">₹100</span>
-        </li>
-      </ul>
+      {pending.length === 0 ? (
+        <div className="empty-state">No pending payments</div>
+      ) : (
+        <ul className="pending-list">
+          {pending.map((p) => (
+            <li key={p._id}>
+              <span>{p.vehicleNumber}</span>
+              <span>{formatDuration(p.entryTime, p.exitTime)}</span>
+              <span className="amount">₹{p.billAmount}</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

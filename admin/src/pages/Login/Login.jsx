@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import { useAdminAuth } from "../../context/AdminAuthContext";
+import { Mail, Lock, ArrowRight, Loader, AlertCircle } from "lucide-react";
 
 const API_BASE = `${window.location.protocol}//${window.location.hostname}:5000/api`;
 
 export default function Login() {
+  const { login } = useAdminAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -43,9 +46,8 @@ export default function Login() {
       }
 
       // Store token
-      // Store token
-      sessionStorage.setItem("adminToken", data.token);
-      sessionStorage.setItem("adminUser", JSON.stringify(data.user));
+      // Store token via context
+      login(data.user, data.token);
 
       navigate("/", { replace: true });
     } catch (err) {
@@ -56,33 +58,80 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h1>SmartParkX Admin</h1>
+    <div className="login-wrapper">
+      <div className="login-box">
+        <div className="login-header">
+          <div className="logo-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <h1 className="login-title">Admin Portal</h1>
+          <p className="login-subtitle">Sign in to manage SmartParkX</p>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          {error && <div className="error-message">{error}</div>}
+        <form onSubmit={handleSubmit} className="login-form">
+          {error && (
+            <div className="error-message">
+              <AlertCircle />
+              <span>{error}</span>
+            </div>
+          )}
 
-          <input
-            type="email"
-            placeholder="admin@smartparkx.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={isLoading}
-          />
+          <div className="form-group">
+            <label className="form-label">Email Address</label>
+            <div className="input-wrapper">
+              <Mail className="input-icon" size={18} />
+              <input
+                type="email"
+                className="form-input"
+                placeholder="admin@smartparkx.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+          </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={isLoading}
-          />
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <div className="input-wrapper">
+              <Lock className="input-icon" size={18} />
+              <input
+                type="password"
+                className="form-input"
+                placeholder="admin123"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+          </div>
 
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? "Authenticating..." : "Sign In"}
+          <button type="submit" className="login-button" disabled={isLoading}>
+            {isLoading ? (
+              <Loader className="spinner" size={20} />
+            ) : (
+              <>
+                Sign In <ArrowRight size={18} />
+              </>
+            )}
           </button>
         </form>
+
+        <div className="login-footer">
+          <div className="security-badge">
+            <Lock size={12} />
+            Secure verified system
+          </div>
+        </div>
       </div>
     </div>
   );
