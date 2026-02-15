@@ -156,3 +156,32 @@ export async function fetchMySummary() {
   if (!res.ok) throw new Error("Failed to fetch summary");
   return res.json();
 }
+
+export async function fetchProfile() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${API_BASE}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch profile");
+  return res.json();
+}
+
+export async function addWalletFunds(amount) {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${API_BASE}/parking/wallet/add`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ amount })
+  });
+
+  if (!res.ok) throw new Error("Failed to add funds");
+  return res.json();
+}

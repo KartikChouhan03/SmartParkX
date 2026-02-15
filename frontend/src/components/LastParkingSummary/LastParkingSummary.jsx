@@ -51,6 +51,17 @@ const LastParkingSummary = () => {
           <span>Total Bill</span>
           <strong>₹{lastSession.billAmount}</strong>
         </div>
+
+        <div className="summary-item">
+          <span>Payment Status</span>
+          <strong
+            style={{
+              color: lastSession.paymentStatus === "PAID" ? "green" : "red",
+            }}
+          >
+            {lastSession.paymentStatus}
+          </strong>
+        </div>
       </div>
     </div>
   );

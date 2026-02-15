@@ -1,26 +1,29 @@
 /* ===============================
-   Slot Card – Professional Static
+   Slot Card – Advanced
    =============================== */
 
 .slot-card {
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 120px;
+    height: 140px;
+    /* Increased height for better presence */
     background: var(--bg-surface);
     border: 1px solid var(--slot-color);
-    /* Static colored border */
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+    border-radius: 16px;
+    /* More rounded */
+    overflow: visible;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: default;
+    user-select: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 /* Hover Effect */
 .slot-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    /* Custom shadow for depth */
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
 /* ===== Content Layout ===== */
@@ -32,86 +35,184 @@
     justify-content: space-between;
 }
 
-/* Header: ID + Indicator Dot */
+/* Header */
 .slot-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .slot-id {
-    font-size: 24px;
+    font-size: 28px;
+    /* Larger, more prominent */
     font-weight: 700;
     color: var(--text-primary);
     font-family: var(--font-main);
+    line-height: 1;
     letter-spacing: -0.5px;
 }
 
-/* Status Indicator Dot (Top Right) */
+/* Indicator Dot */
 .slot-indicator {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background-color: var(--slot-color);
     box-shadow: 0 0 0 4px var(--bg-surface-muted);
 }
 
-/* Footer: Status Text */
+/* Footer & Info */
 .slot-footer {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .slot-status-text {
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
+    letter-spacing: 1px;
     color: var(--text-secondary);
 }
 
-/* ===== Interactive Glow (Background) ===== */
-.slot-glow {
+.slot-duration {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ===== Hardware Heartbeat Tooltip (Hover) ===== */
+.heartbeat-tooltip {
     position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at top right, var(--slot-color), transparent 70%);
-    opacity: 0.08;
-    z-index: 0;
-    transition: opacity 0.3s ease;
+    top: -34px;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background-color: var(--text-primary);
+    color: var(--bg-surface);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
     pointer-events: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.slot-card:hover .slot-glow {
-    opacity: 0.15;
+.heartbeat-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--text-primary) transparent transparent transparent;
 }
 
-/* ===============================
-   Status Variants
-   =============================== */
+.slot-card:hover .heartbeat-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
 
-/* AVAILABLE */
+/* ===== Standard Status Variants ===== */
 .slot-card.available {
     --slot-color: var(--success);
+    background: linear-gradient(145deg, #ffffff, #f0fdf4);
+    /* Subtle green tint */
 }
 
 .slot-card.available .slot-status-text {
     color: var(--success);
 }
 
-/* OCCUPIED */
 .slot-card.occupied {
     --slot-color: var(--warning);
+    background: linear-gradient(145deg, #ffffff, #fffbeb);
+    /* Subtle yellow tint */
 }
 
 .slot-card.occupied .slot-status-text {
-    color: var(--warning);
+    color: #d97706;
+    /* Darker yellow/orange for text */
 }
 
-/* SENSOR ISSUE */
 .slot-card.issue {
     --slot-color: var(--danger);
+    background: #fef2f2;
 }
 
 .slot-card.issue .slot-status-text {
     color: var(--danger);
+}
+
+.slot-card.maintenance {
+    --slot-color: var(--text-muted);
+    background-color: var(--bg-surface-muted);
+    border-style: dashed;
+    border-width: 2px;
+    opacity: 0.8;
+}
+
+.slot-card.maintenance .slot-id {
+    color: var(--text-muted);
+}
+
+/* ===== Overstay Alert (>24h) ===== */
+.slot-card.overstay {
+    border-color: var(--danger);
+    background-color: #fff1f2;
+    box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.1);
+    animation: pulse-border 2s infinite;
+}
+
+.slot-card.overstay .slot-duration {
+    color: var(--danger);
+    font-weight: 700;
+}
+
+@keyframes pulse-border {
+    0% {
+        box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(225, 29, 72, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(225, 29, 72, 0);
+    }
+}
+
+/* ===== Heatmap Mode Variants ===== */
+
+.slot-card.heatmap-active.hm-short {
+    --slot-color: var(--success);
+    background: #dcfce7;
+    border-color: transparent;
+}
+
+
+.slot-card.heatmap-active.hm-medium {
+    --slot-color: var(--warning);
+    background: #fef3c7;
+    border-color: transparent;
+}
+
+
+.slot-card.heatmap-active.hm-long {
+    --slot-color: #ef4444;
+    background: #fee2e2;
+    border-color: transparent;
+    color: #7f1d1d;
+}
+
+.slot-card.heatmap-active .slot-id {
+    opacity: 0.8;
 }

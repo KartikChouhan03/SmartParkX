@@ -4,15 +4,19 @@ import "./Navbar.css";
 export default function Navbar() {
   return (
     <header className="admin-navbar">
-      {/* Left */}
+      {/* Left: Title & Welcome */}
       <div className="navbar-left">
-        <h1 className="navbar-title">Dashboard</h1>
+        <div className="navbar-header-content">
+          <h1 className="navbar-title">Dashboard</h1>
+          <p className="navbar-subtitle">Welcome back, Admin</p>
+        </div>
       </div>
 
-      {/* Right */}
+      {/* Right: User Profile (kept existing but can enhance) */}
       <div className="navbar-right">
         <div className="navbar-user">
-          <span className="user-name">Hello, Admin</span>
+          <div className="user-avatar-placeholder">A</div>
+          <span className="user-name">Admin</span>
         </div>
       </div>
     </header>

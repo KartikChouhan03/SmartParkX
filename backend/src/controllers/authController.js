@@ -54,9 +54,23 @@ exports.login = async (req, res) => {
         // Generate token
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-        res.json({ token, user: { id: user._id, name: user.name, email: user.email, vehicleNumber: user.vehicleNumber } });
+        res.json({ token, user: { id: user._id, name: user.name, email: user.email, vehicleNumber: user.vehicleNumber, role: user.role } });
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ error: "Server error" });
+    }
+};
+
+
+exports.getMe = async (req, res) => {
+    try {
+        console.log("req.user:", req.user);
+
+        const user = await User.findById(req.user.id).select("-password");
+
+        res.json(user);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch profile" });
     }
 };

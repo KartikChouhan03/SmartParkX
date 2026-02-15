@@ -24,3 +24,5 @@ function getLocalIP() {
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running at http://${getLocalIP()}:${PORT}`);
 });
+
+app.use("/api/admin",require("./routes/admin"));

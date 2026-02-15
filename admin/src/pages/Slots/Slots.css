@@ -7,52 +7,131 @@
 }
 
 /* ===== Header ===== */
+/* ===== Header ===== */
 .slots-header {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
+    gap: 24px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border-muted);
+    padding-bottom: 24px;
+}
+
+.header-left {
+    flex: 1;
+    min-width: 200px;
+    display: block;
 }
 
 .slots-title {
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+    display: contents;
 }
 
 .slots-subtitle {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text-muted);
+    padding-top: 6px;
 }
 
-/* ===== Summary ===== */
+/* ===== Right Side Actions ===== */
+.slots-actions {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+/* Controls / Toggle */
+.slots-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Removed background for cleaner look */
+    padding: 0;
+    border: none;
+}
+
+.toggle-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Custom Toggle Switch */
+.toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background-color: var(--border-default);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active {
+    background-color: var(--primary);
+}
+
+.toggle-switch.active::after {
+    transform: translateX(20px);
+}
+
+/* ===== Summary Widgets ===== */
 .slots-summary {
     display: flex;
-    gap: 20px;
+    gap: 24px;
 }
 
 .summary-item {
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-md);
-    padding: 10px 14px;
-    min-width: 90px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+    border-left: 3px solid var(--border-default);
+    /* Cleaner, minimal look */
+    background: transparent;
+    border-radius: 0;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    min-width: auto;
+    text-align: left;
 }
 
 .summary-label {
     display: block;
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: 600;
     color: var(--text-muted);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .summary-value {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text-primary);
+    line-height: 1;
 }
 
 .summary-value.success {
@@ -66,6 +145,7 @@
 /* ===== Grid ===== */
 .slots-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    /* Widen cards */
+    gap: 20px;
 }

@@ -10,7 +10,7 @@
 .anpr-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
     margin-bottom: var(--space-lg);
 }
 
@@ -26,29 +26,62 @@
     color: var(--text-muted);
 }
 
-/* ===== Filters ===== */
-.anpr-filters {
+/* ===== Filters & Controls ===== */
+.anpr-controls {
     display: flex;
-    gap: var(--space-sm);
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.anpr-filters select {
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
     padding: 8px 12px;
-    border-radius: var(--radius-sm);
+    width: 100%;
+    /* Full width to sit below filters */
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.search-box:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--text-primary);
+    width: 100%;
+}
+
+.control-select {
+    padding: 8px 12px;
+    border-radius: 8px;
     border: 1px solid var(--border-default);
     background: var(--bg-surface);
     font-size: 13px;
     color: var(--text-primary);
     cursor: pointer;
     outline: none;
+    flex: 1;
+    /* Distribute space equally */
+    height: 38px;
+    /* Match search box height approx */
     transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.anpr-filters select:hover {
+.control-select:hover {
     border-color: var(--border-muted);
 }
 
-.anpr-filters select:focus {
+.control-select:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px var(--primary-light);
 }
@@ -91,12 +124,38 @@
     color: var(--text-primary);
 }
 
+.anpr-table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
 .anpr-table tr:not(:last-child) {
     border-bottom: 1px solid var(--border-muted);
 }
 
 .anpr-table tr:hover td {
     background-color: var(--bg-surface-muted);
+}
+
+.gate-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    /* Spacing between time and date */
+}
+
+.gate-name {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.gate-type {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* ===== Status Badges ===== */
@@ -130,4 +189,206 @@
     background: var(--danger-bg);
     color: var(--danger);
     border: 1px solid rgba(153, 57, 85, 0.2);
+}
+
+/* ===============================
+   Vehicle Details Modal
+   =============================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+    background-color: var(--bg-surface);
+    width: 90%;
+    max-width: 400px;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Modal Header */
+.modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+}
+
+.close-btn:hover {
+    background-color: var(--bg-surface-muted);
+    color: var(--danger);
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.vehicle-summary {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.vehicle-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid var(--border-muted);
+}
+
+.vehicle-identity h2 {
+    font-size: 20px;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+    font-family: 'Orbitron', monospace;
+    letter-spacing: 1px;
+}
+
+.status-badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.active {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.status-badge.completed {
+    background: var(--bg-surface-muted);
+    color: var(--text-muted);
+}
+
+/* Details Grid */
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.detail-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.detail-icon {
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.detail-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.detail-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 16px 20px;
+    background-color: var(--bg-surface-muted);
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--border-muted);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+    }
+
+    .vehicle-summary {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
 }

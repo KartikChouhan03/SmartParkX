@@ -1,21 +1,27 @@
 .admin-layout {
     display: flex;
-    min-height: 100vh;
-    background-color: var(--color-bg-dark);
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--bg-surface-muted);
 }
 
-/* Right side */
+
 .admin-main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--bg-surface-muted);
 }
 
-/* Content area (white dashboard) */
+/* Content area (Scrollable) */
 .admin-content {
     flex: 1;
     padding: 24px;
     background-color: #ffffff;
+    /* White only for content area */
     overflow-y: auto;
+    scroll-behavior: smooth;
 }

@@ -1,15 +1,35 @@
-import React, { useState } from "react";
-import { RotateCw } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { RotateCw, Wifi, Clock, Activity, Server, Zap } from "lucide-react";
 import "./SystemStatus.css";
 
-function StatusItem({ label, status, type }) {
+function StatusGauge({ label, status, type, icon: Icon }) {
   return (
-    <div className="status-item">
-      <div className="status-left">
-        <span className={`status-dot status-${type}`} />
-        <span className="status-label">{label}</span>
+    <div className={`status-gauge type-${type}`}>
+      <div className="gauge-ring">
+        <div className="gauge-icon">
+          <Icon size={20} />
+        </div>
+        {status === "Offline" && <div className="offline-overlay" />}
       </div>
-      <span className={`status-text status-${type}`}>{status}</span>
+      <span className="gauge-label">{label}</span>
+      <span className={`gauge-status status-${type}`}>{status}</span>
+    </div>
+  );
+}
+
+function VitalSign({ label, value, icon: Icon, color }) {
+  return (
+    <div className="vital-sign">
+      <div
+        className="vital-icon"
+        style={{ backgroundColor: color + "20", color: color }}
+      >
+        <Icon size={16} />
+      </div>
+      <div className="vital-info">
+        <span className="vital-label">{label}</span>
+        <span className="vital-value">{value}</span>
+      </div>
     </div>
   );
 }
@@ -60,33 +80,55 @@ export default function SystemStatus() {
   return (
     <div className="system-status">
       <div className="system-status-header">
-        <h3 className="system-status-title">System Status</h3>
+        <h3 className="system-status-title">System Health</h3>
         <button
           className={`refresh-btn ${refreshing ? "spinning" : ""}`}
           onClick={handleRefresh}
           disabled={refreshing}
           aria-label="Refresh Status"
         >
-          <RotateCw size={18} />
+          <RotateCw size={16} />
         </button>
       </div>
 
-      <div className="status-list">
-        <StatusItem
-          label="ANPR Camera"
+      {/* Gauges Row */}
+      <div className="status-gauges">
+        <StatusGauge
+          label="ANPR"
           status={statuses.anpr.status}
           type={statuses.anpr.type}
+          icon={Zap}
         />
-        <StatusItem
-          label="Slot Sensors"
+        <StatusGauge
+          label="Sensors"
           status={statuses.sensors.status}
           type={statuses.sensors.type}
+          icon={Activity}
         />
-        {/* Payment System Removed */}
-        <StatusItem
-          label="Backend API"
+        <StatusGauge
+          label="Backend"
           status={statuses.backend.status}
           type={statuses.backend.type}
+          icon={Server}
+        />
+      </div>
+
+      <div className="divider" />
+
+      {/* Vital Signs Row */}
+      <div className="vital-signs">
+        <VitalSign label="Uptime" value="14d 2h" icon={Clock} color="#2563eb" />
+        <VitalSign
+          label="Signal"
+          value="Excellent"
+          icon={Wifi}
+          color="#16a34a"
+        />
+        <VitalSign
+          label="Last Sync"
+          value="2s ago"
+          icon={RotateCw}
+          color="#9333ea"
         />
       </div>
     </div>

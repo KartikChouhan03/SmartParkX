@@ -2,7 +2,7 @@ import React from "react";
 import "./Billing.css";
 
 import BillingKPIs from "../../components/BillingKPIs/BillingKPIs.jsx";
-import RevenueChart from "../../components/RevenueChart/RevenueChart.jsx";
+import Chart from "../../components/Chart/Chart.jsx";
 import PendingPayments from "../../components/PendingPayments/PendingPayments.jsx";
 import BillingTable from "../../components/BillingTable/BillingTable.jsx";
 
@@ -20,7 +20,7 @@ export default function BillingPage() {
 
       {/* Analytics Row */}
       <div className="billing-analytics">
-        <RevenueChart />
+        <Chart />
         <PendingPayments />
       </div>
 

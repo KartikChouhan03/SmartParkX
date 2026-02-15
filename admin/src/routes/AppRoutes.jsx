@@ -4,7 +4,7 @@ import Dashboard from "../pages/Dashboard/Dashboard.jsx";
 import Slots from "../pages/Slots/Slots.jsx";
 import ProtectedRoute from "../components/ProtectedRoute.jsx";
 import AdminLayout from "../layout/AdminLayout.jsx";
-import ANPRLogs from "../pages/AnprLogs/AnprLogs.jsx";
+import ANPRLogs from "../pages/AnprLogs/ANPRLogs.jsx";
 import Billing from "../pages/Billing/Billing.jsx";
 import SystemLogs from "../pages/SystemLogs/SystemLogs.jsx";
 

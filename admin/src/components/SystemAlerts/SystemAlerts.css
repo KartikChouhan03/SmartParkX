@@ -1,101 +1,351 @@
 /* ===============================
-   System Alerts – Dashboard
+   System Alerts – Professional UI
    =============================== */
 
 .system-alerts {
     background-color: var(--bg-surface);
     border: 1px solid var(--border-default);
-    border-radius: 14px;
+    border-radius: var(--radius-md);
     padding: 24px;
     box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 360px;
+    position: relative;
+    overflow: hidden;
 }
 
-.system-alerts:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+/* ===== Header ===== */
+.alerts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-muted);
 }
 
-.system-alerts-title {
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alerts-title {
     font-size: 16px;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 20px;
-    letter-spacing: -0.01em;
 }
 
-/* ===== List ===== */
+.alert-count {
+    background-color: var(--danger);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    height: 20px;
+    min-width: 20px;
+    padding: 0 6px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+    line-height: 1;
+    margin-right: 10px;
+}
+
+.clear-all-btn {
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.clear-all-btn:hover {
+    color: var(--danger);
+}
+
+/* ===== List Container ===== */
 .alerts-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+    /* Space for scrollbar */
 }
 
-/* ===== Alert Item ===== */
-.alert-item {
+/* Scrollbar styling */
+.alerts-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.alerts-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.alerts-list::-webkit-scrollbar-thumb {
+    background-color: var(--border-default);
+    border-radius: 4px;
+}
+
+/* ===== Alert Card ===== */
+.alert-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-muted);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover Lift */
+.alert-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--border-default);
+}
+
+/* Left Accent Line */
+.alert-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: transparent;
+    /* Set by modifier */
+}
+
+/* Content Layout */
+.alert-main {
+    display: flex;
+    gap: 14px;
+    flex: 1;
+    /* Allow resizing */
+    min-width: 0;
+    /* Prevent overflow on flex items */
+}
+
+/* Icon Box */
+.alert-icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 12px 14px;
-    margin: 0 -12px;
-    /* Negative margin to align hover within padding */
-    border-radius: 8px;
-    border-left: 3px solid transparent;
-    /* Accent placeholder */
-    transition: background-color 0.2s ease;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.alert-item:hover {
-    background-color: var(--bg-surface-muted);
-}
-
-/* Text */
+/* Text Content */
 .alert-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.alert-title {
+.alert-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.alert-name {
     font-size: 14px;
     font-weight: 600;
     color: var(--text-primary);
 }
 
-.alert-description {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.4;
+.alert-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    margin-left: auto;
+    /* Push to right */
+    padding-left: 8px;
 }
 
-/* Badge */
-.alert-badge {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    flex-shrink: 0;
-    margin-left: 12px;
+.alert-msg {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-right: 8px;
 }
 
 /* ===== Severity Variants ===== */
-.alert-warning {
-    border-left-color: var(--warning);
+
+/* Critical */
+.type-critical::before {
+    background-color: var(--danger);
 }
 
-.alert-badge.warning {
-    background-color: var(--warning-bg);
-    color: #92400e;
-    /* Dark orange */
+.type-critical {
+    background-color: #fff5f7;
+    /* Very subtle red tint */
+    border-color: #ffe0e6;
+    animation: criticalPulse 2s infinite;
 }
 
-.alert-danger {
-    border-left-color: var(--danger);
+@keyframes criticalPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.1);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(220, 38, 38, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+    }
 }
 
-.alert-badge.danger {
+.type-critical .alert-icon-box {
     background-color: var(--danger-bg);
-    color: #9f1239;
-    /* Dark red */
+    color: var(--danger);
+}
+
+/* Warning */
+.type-warning::before {
+    background-color: var(--warning);
+}
+
+.type-warning .alert-icon-box {
+    background-color: var(--warning-bg);
+    color: var(--warning);
+}
+
+/* Info */
+.type-info::before {
+    background-color: var(--primary);
+}
+
+.type-info .alert-icon-box {
+    background-color: var(--bg-surface-muted);
+    color: var(--primary);
+}
+
+/* ===== Actions (Hover Reveal) ===== */
+.alert-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-left: 8px;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.2s ease;
+}
+
+.alert-card:hover .alert-actions {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.action-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+}
+
+.action-btn.resolve {
+    color: var(--success);
+    background-color: var(--success-bg);
+}
+
+.action-btn.resolve:hover {
+    background-color: var(--success);
+    color: white;
+}
+
+.action-btn.dismiss {
+    color: var(--text-muted);
+}
+
+.action-btn.dismiss:hover {
+    background-color: var(--bg-surface-muted);
+    color: var(--danger);
+}
+
+/* ===== Empty State ===== */
+.empty-alerts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 40px 0;
+    opacity: 0.7;
+}
+
+.empty-icon {
+    color: var(--success);
+    margin-bottom: 16px;
+    opacity: 0.9;
+}
+
+.empty-alerts p {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.empty-alerts span {
+    font-size: 13px;
+}
+
+/* ===============================
+   Mobile Responsiveness
+   =============================== */
+@media (max-width: 480px) {
+    .system-alerts {
+        padding: 16px;
+    }
+
+    .alert-card {
+        flex-direction: column;
+        padding: 12px;
+    }
+
+    .alert-main {
+        align-items: flex-start;
+    }
+
+    /* Show actions by default on mobile */
+    .alert-actions {
+        opacity: 1;
+        transform: none;
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border-muted);
+    }
+
+    .action-btn {
+        width: 36px;
+        height: 36px;
+    }
 }

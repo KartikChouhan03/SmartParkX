@@ -153,7 +153,7 @@
 
     padding: 12px 14px;
     border: none;
-    background: transparent;
+    background: rgba(220, 38, 38, 0.2);
 
     color: var(--danger);
     font-size: 14px;
@@ -165,6 +165,6 @@
 }
 
 .logout-btn:hover {
-    background-color: var(--danger-bg);
-    color: var(--danger);
+    background-color: rgba(220, 38, 38, 0.318);
+    color: var(--danger-bg);
 }

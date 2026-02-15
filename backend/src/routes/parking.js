@@ -13,4 +13,7 @@ router.get("/my/history", auth, parking.getMyHistory);
 router.get("/my/receipt/:sessionId", auth, parking.downloadReceipt);
 router.get("/my/summary", auth, parking.getMySummary);
 
+router.post("/wallet/add", auth, parking.addFunds);
+
+
 module.exports = router;

@@ -1,0 +1,137 @@
+/* ===== Quick Actions ===== */
+.quick-actions-toolbar {
+    display: flex;
+    justify-content: space-between;
+    /* Valid adjustment for left/right split */
+    align-items: center;
+    gap: 24px;
+    background-color: var(--bg-surface);
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-muted);
+    box-shadow: var(--shadow-sm);
+    /* Position at top naturally in flex container */
+    order: -1;
+}
+
+/* Ensure KpiGrid is below */
+.kpi-grid {
+    order: 0;
+}
+
+.toolbar-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    position: relative;
+    /* For dropdown context */
+}
+
+/* Button Base */
+.quick-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    height: 36px;
+}
+
+/* Variants */
+.quick-btn.emergency {
+    background-color: var(--danger);
+    color: white;
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+}
+
+.quick-btn.emergency:hover {
+    background-color: #b91c1c;
+    /* Darker red */
+    transform: translateY(-1px);
+}
+
+.quick-btn.outline {
+    background-color: white;
+    border-color: var(--border-default);
+    color: var(--text-primary);
+}
+
+.quick-btn.outline:hover {
+    background-color: var(--bg-surface-muted);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.quick-btn.icon-only {
+    padding: 8px 12px;
+}
+
+/* Dropdown */
+.action-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    /* Or left depending on preference */
+    margin-top: 8px;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-muted);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    min-width: 160px;
+    z-index: 50;
+    padding: 4px;
+    animation: fadeIn 0.1s ease-out;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.15s;
+    text-align: left;
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg-surface-muted);
+    color: var(--text-primary);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

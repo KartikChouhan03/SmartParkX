@@ -10,12 +10,20 @@ const parkingSessionSchema = new mongoose.Schema({
   entryTime: { type: Date, required: true },
   exitTime: { type: Date },
   slot: { type: String, default: null },
+
   status: {
     type: String,
     enum: ["ACTIVE", "COMPLETED"],
     default: "ACTIVE"
   },
-  billAmount: { type: Number }
-});
-module.exports = mongoose.model("ParkingSession", parkingSessionSchema);
 
+  billAmount: { type: Number },
+
+  paymentStatus: {
+    type: String,
+    enum: ["PENDING", "PAID"],
+    default: null
+  }
+});
+
+module.exports = mongoose.model("ParkingSession", parkingSessionSchema);
