@@ -43,8 +43,9 @@ export default function Login() {
       }
 
       // Store token
-      localStorage.setItem("adminToken", data.token);
-      localStorage.setItem("adminUser", JSON.stringify(data.user));
+      // Store token
+      sessionStorage.setItem("adminToken", data.token);
+      sessionStorage.setItem("adminUser", JSON.stringify(data.user));
 
       navigate("/", { replace: true });
     } catch (err) {

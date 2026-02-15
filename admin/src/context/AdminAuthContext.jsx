@@ -4,17 +4,17 @@ const AdminAuthContext = createContext();
 
 export function AdminAuthProvider({ children }) {
   const [adminUser, setAdminUser] = useState(
-    JSON.parse(localStorage.getItem("adminUser")),
+    JSON.parse(sessionStorage.getItem("adminUser")),
   );
   const [adminToken, setAdminToken] = useState(
-    localStorage.getItem("adminToken"),
+    sessionStorage.getItem("adminToken"),
   );
 
   const logout = () => {
     setAdminUser(null);
     setAdminToken(null);
-    localStorage.removeItem("adminUser");
-    localStorage.removeItem("adminToken");
+    sessionStorage.removeItem("adminUser");
+    sessionStorage.removeItem("adminToken");
   };
 
   return (
