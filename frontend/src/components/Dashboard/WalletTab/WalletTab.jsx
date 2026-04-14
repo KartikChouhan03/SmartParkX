@@ -16,6 +16,8 @@ const WalletTab = () => {
 
   useEffect(() => {
     loadWallet();
+    const interval = setInterval(loadWallet, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const loadWallet = async () => {
@@ -36,9 +38,9 @@ const WalletTab = () => {
     }
   };
 
-  // Only PAID sessions shown as deductions
+  // Only PAID via WALLET sessions shown as deductions
   const transactions = history
-    ?.filter((s) => s.paymentStatus === "PAID")
+    ?.filter((s) => s.paymentStatus === "PAID" && (!s.paymentMethod || s.paymentMethod === "WALLET"))
     .map((s) => ({
       id: s._id,
       date: new Date(s.exitTime).toLocaleDateString(),

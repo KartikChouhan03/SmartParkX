@@ -4,6 +4,7 @@ const fs = require("fs");
 const ParkingSession = require("../models/ParkingSession");
 const User = require("../models/User");
 
+const RATE_PER_HOUR = Number(process.env.RATE_PER_HOUR) || 50; // single source
 
 exports.handleUpload = async (req, res) => {
   if (!req.file) {
@@ -24,16 +25,11 @@ exports.handleUpload = async (req, res) => {
       }
 
       const plate = stdout.trim();
-
-      res.json({
-        ok: true,
-        plate: plate === "UNKNOWN" ? null : plate
-      });
+      res.json({ ok: true, plate: plate === "UNKNOWN" ? null : plate });
     }
   );
 };
 
-/*ESP32 raw JPEG upload */
 exports.handleEsp32Upload = async (req, res) => {
   const chunks = [];
 
@@ -41,73 +37,76 @@ exports.handleEsp32Upload = async (req, res) => {
 
   req.on("end", () => {
     const buffer = Buffer.concat(chunks);
-
-    const filePath = path.resolve(
-      "uploads",
-      "anpr",
-      `esp32_${Date.now()}.jpg`
-    );
-
+    const filePath = path.resolve("uploads", "anpr", `esp32_${Date.now()}.jpg`);
     fs.writeFileSync(filePath, buffer);
 
-    //Respond immediately (ESP32 must NOT wait)
+    // Respond immediately — ESP32 must NOT wait
     res.json({ ok: true, received: true });
 
-    // Run ANPR asynchronously
     const pythonScript = path.resolve("anpr/run_anpr.py");
 
-    execFile("C:\\Users\\chouh\\AppData\\Local\\Programs\\Python\\Python311\\python.exe", [pythonScript, filePath], async (err, stdout) => {
-      if (err) {
-        console.error("ANPR error:", err);
-        return;
-      }
-
-      const plate = stdout.trim();
-      if (!plate || plate === "UNKNOWN") return;
-
-      // Find user by vehicle number
-      const user = await User.findOne({ vehicleNumber: plate });
-      if (!user) {
-        console.log("Unknown vehicle:", plate);
-        return;
-      }
-
-      // Check active session for THIS user
-      const activeSession = await ParkingSession.findOne({
-        user: user._id,
-        status: "ACTIVE"
-      });
-
-      if (!activeSession) {
-        // ENTRY
-        await ParkingSession.create({
-          user: user._id,
-          vehicleNumber: plate,
-          entryTime: new Date()
-        });
-        console.log("ENTRY for user:", user.email);
-      } else if (activeSession.status === "ACTIVE") {
-        // EXIT
-        const lastExitGap = 30 * 1000; // 30 seconds
-
-        if (
-          activeSession.exitTime &&
-          Date.now() - activeSession.exitTime.getTime() < lastExitGap
-        ) {
+    execFile(
+      "C:\\Users\\chouh\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      [pythonScript, filePath],
+      async (err, stdout) => {
+        if (err) {
+          console.error("ANPR error:", err);
           return;
         }
 
-        activeSession.exitTime = new Date();
-        activeSession.status = "COMPLETED";
+        const plate = stdout.trim();
+        if (!plate || plate === "UNKNOWN") return;
 
-        const durationMs = activeSession.exitTime - activeSession.entryTime;
-        const hours = Math.ceil(durationMs / (1000 * 60 * 60));
-        activeSession.billAmount = hours * 50;
+        const user = await User.findOne({ vehicleNumber: plate });
+        if (!user) {
+          console.log("Unknown vehicle:", plate);
+          return;
+        }
 
-        await activeSession.save();
-        console.log("EXIT for user:", user.email);
+        const activeSession = await ParkingSession.findOne({
+          user: user._id,
+          status: "ACTIVE"
+        });
+
+        if (!activeSession) {
+          // ENTRY
+          await ParkingSession.create({
+            user: user._id,
+            vehicleNumber: plate,
+            entryTime: new Date()
+          });
+          console.log("ENTRY for user:", user.email);
+        } else {
+          // EXIT — debounce: ignore if exited within last 30s
+          const lastExitGap = 30 * 1000;
+          if (
+            activeSession.exitTime &&
+            Date.now() - activeSession.exitTime.getTime() < lastExitGap
+          ) {
+            return;
+          }
+
+          activeSession.exitTime = new Date();
+          activeSession.status = "COMPLETED";
+
+          const durationMs = activeSession.exitTime - activeSession.entryTime;
+          const hours = Math.ceil(durationMs / (1000 * 60 * 60));
+          activeSession.billAmount = hours * RATE_PER_HOUR;
+
+          // ✅ FIX: wallet deduction (was missing entirely before)
+          if (user.walletBalance >= activeSession.billAmount) {
+            user.walletBalance -= activeSession.billAmount;
+            activeSession.paymentStatus = "PAID";
+            await user.save();
+            console.log(`EXIT + PAID ₹${activeSession.billAmount} for ${user.email}`);
+          } else {
+            activeSession.paymentStatus = "PENDING";
+            console.log(`EXIT + PENDING (insufficient wallet) for ${user.email}`);
+          }
+
+          await activeSession.save();
+        }
       }
-    });
-
+    );
   });
 };

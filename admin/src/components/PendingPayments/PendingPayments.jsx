@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./PendingPayments.css";
 import api from "../../lib/adminApi";
 
+const POLL_INTERVAL = 10000;
+
 export default function PendingPayments() {
   const [pending, setPending] = useState([]);
-
-  useEffect(() => {
-    fetchPending();
-  }, []);
 
   const fetchPending = async () => {
     try {
@@ -17,6 +15,12 @@ export default function PendingPayments() {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    fetchPending();
+    const id = setInterval(fetchPending, POLL_INTERVAL); // ✅ poll
+    return () => clearInterval(id);
+  }, []);
 
   const formatDuration = (entry, exit) => {
     const ms = new Date(exit) - new Date(entry);
@@ -31,7 +35,6 @@ export default function PendingPayments() {
       <div className="card-header">
         <h3>Pending Payments</h3>
       </div>
-
       {pending.length === 0 ? (
         <div className="empty-state">No pending payments</div>
       ) : (

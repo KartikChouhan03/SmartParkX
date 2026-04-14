@@ -1,9 +1,9 @@
 const ParkingSession = require("../models/ParkingSession");
 const User = require("../models/User");
 const generateReceipt = require("../utils/generateReceipt");
+const { calculateBill } = require("../utils/billing");
 
-
-// ENTRY
+// ================= ENTRY =================
 exports.entry = async (req, res) => {
   try {
     const { vehicleNumber } = req.body;
@@ -21,12 +21,13 @@ exports.entry = async (req, res) => {
       return res.status(400).json({ error: "Vehicle already inside" });
     }
 
-    const userId = req.user.id;
+    const userId = req.user?.id || null;
 
     const session = await ParkingSession.create({
       user: userId,
       vehicleNumber,
-      entryTime: new Date()
+      entryTime: new Date(),
+      paymentStatus: "PENDING"
     });
 
     res.json({
@@ -41,7 +42,7 @@ exports.entry = async (req, res) => {
 };
 
 
-// EXIT WITH WALLET LOGIC
+// ================= EXIT =================
 exports.exit = async (req, res) => {
   try {
     const { vehicleNumber } = req.body;
@@ -55,26 +56,40 @@ exports.exit = async (req, res) => {
       return res.status(404).json({ error: "Active session not found" });
     }
 
-    const user = await User.findById(session.user);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    // 🔴 Prevent double payment
+    if (session.paymentStatus === "PAID") {
+      return res.json({
+        message: "Already paid",
+        gate: "OPEN"
+      });
     }
 
-    // Calculate billing
+    // 🔴 No parking case (important)
+    if (!session.slot) {
+      session.status = "CANCELLED";
+      await session.save();
+
+      return res.json({
+        message: "No parking detected. Session cancelled.",
+        gate: "OPEN"
+      });
+    }
+
+    const user = session.user ? await User.findById(session.user) : null;
+
+    // Calculate bill
     session.exitTime = new Date();
-    session.status = "COMPLETED";
-
-    const durationMs = session.exitTime - session.entryTime;
-    const hours = Math.ceil(durationMs / (1000 * 60 * 60));
-
-    const billAmount = hours * 50;
+    const billAmount = calculateBill(session.entryTime, session.exitTime);
     session.billAmount = billAmount;
 
-    // Wallet Check
-    if (user.walletBalance >= billAmount) {
+    // ✅ Wallet payment
+    if (user && user.walletBalance >= billAmount) {
 
       user.walletBalance -= billAmount;
+
       session.paymentStatus = "PAID";
+      session.paymentMethod = "WALLET";
+      session.status = "COMPLETED";
 
       await user.save();
       await session.save();
@@ -88,14 +103,15 @@ exports.exit = async (req, res) => {
       });
 
     } else {
-
+      // ❗ Guest or insufficient balance
       session.paymentStatus = "PENDING";
+
       await session.save();
 
-      return res.status(200).json({
-        message: "Insufficient wallet balance",
+      return res.json({
+        message: "Payment pending",
         billAmount,
-        walletBalance: user.walletBalance,
+        walletBalance: user ? user.walletBalance : null,
         paymentStatus: "PENDING",
         gate: "BLOCKED"
       });
@@ -108,7 +124,7 @@ exports.exit = async (req, res) => {
 };
 
 
-// GET ACTIVE SESSION
+// ================= GET ACTIVE SESSION =================
 exports.getMyActiveSession = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -127,7 +143,7 @@ exports.getMyActiveSession = async (req, res) => {
 };
 
 
-// GET LAST COMPLETED
+// ================= GET LAST COMPLETED =================
 exports.getMyLastCompleted = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -146,7 +162,7 @@ exports.getMyLastCompleted = async (req, res) => {
 };
 
 
-// GET HISTORY
+// ================= GET HISTORY =================
 exports.getMyHistory = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -165,7 +181,7 @@ exports.getMyHistory = async (req, res) => {
 };
 
 
-// SUMMARY (FIXED: Only count PAID sessions)
+// ================= SUMMARY =================
 exports.getMySummary = async (req, res) => {
   try {
     const sessions = await ParkingSession.find({
@@ -198,8 +214,7 @@ exports.getMySummary = async (req, res) => {
 };
 
 
-
-// DOWNLOAD RECEIPT
+// ================= DOWNLOAD RECEIPT =================
 exports.downloadReceipt = async (req, res) => {
   try {
     const { sessionId } = req.params;
@@ -210,19 +225,18 @@ exports.downloadReceipt = async (req, res) => {
       return res.status(404).json({ error: "Session not found" });
     }
 
-    // Ensure the session belongs to the requesting user
-    if (session.user.toString() !== req.user.id) {
+    if (session.user?.toString() !== req.user.id) {
       return res.status(403).json({ error: "Unauthorized access to receipt" });
     }
 
-    // Ensure the session is completed and paid
     if (session.status !== "COMPLETED" || session.paymentStatus !== "PAID") {
-      return res.status(400).json({ error: "Receipt available only for completed and paid sessions" });
+      return res.status(400).json({
+        error: "Receipt available only for completed and paid sessions"
+      });
     }
 
     const user = await User.findById(req.user.id);
 
-    // Call the utility function to generate and pipe the PDF
     generateReceipt(res, session, user);
 
   } catch (error) {
@@ -232,7 +246,7 @@ exports.downloadReceipt = async (req, res) => {
 };
 
 
-// ADD FUNDS (DEMO PURPOSE)
+// ================= ADD FUNDS =================
 exports.addFunds = async (req, res) => {
   try {
     const { amount } = req.body;
@@ -253,5 +267,45 @@ exports.addFunds = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ error: "Failed to add funds" });
+  }
+};
+
+// ================= ADMIN MARK PAID =================
+exports.adminMarkPaid = async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+
+    const session = await ParkingSession.findById(sessionId);
+
+    if (!session) {
+      return res.status(404).json({ error: "Session not found" });
+    }
+
+    if (session.paymentStatus === "PAID") {
+      return res.json({ message: "Already paid" });
+    }
+
+    // Fix: generate exitTime and compute bill amount if missing
+    if (!session.exitTime) {
+      session.exitTime = new Date();
+      session.billAmount = calculateBill(session.entryTime, session.exitTime);
+    }
+
+    session.paymentStatus = "PAID";
+    session.paymentMethod = "CASH";
+    session.status = "COMPLETED";
+
+    await session.save();
+
+    res.json({
+      message: "Marked as paid",
+      sessionId,
+      paymentStatus: "PAID",
+      billAmount: session.billAmount
+    });
+
+  } catch (err) {
+    console.error("Admin Mark Paid error:", err);
+    res.status(500).json({ error: "Failed to mark as paid" });
   }
 };

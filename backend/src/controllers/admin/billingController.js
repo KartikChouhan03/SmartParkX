@@ -76,9 +76,7 @@ exports.getBillingKpis = async (req, res) => {
 
 exports.getBillingRecords = async (req, res) => {
     try {
-        const records = await ParkingSession.find({
-            status: "COMPLETED"
-        }).sort({ exitTime: -1 });
+        const records = await ParkingSession.find().sort({ entryTime: -1 });
 
         res.json(records);
 

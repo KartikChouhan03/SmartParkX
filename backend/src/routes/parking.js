@@ -15,5 +15,6 @@ router.get("/my/summary", auth, parking.getMySummary);
 
 router.post("/wallet/add", auth, parking.addFunds);
 
+router.post("/admin/mark-paid", auth, parking.adminMarkPaid);
 
 module.exports = router;

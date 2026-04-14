@@ -55,6 +55,7 @@ export default function ANPRLogs() {
   };
 
   const formatDate = (date) => {
+    if (!date) return "--";
     return new Date(date).toLocaleString();
   };
 
@@ -262,7 +263,24 @@ export default function ANPRLogs() {
               </div>
             </div>
 
-            <div className="modal-footer">
+            <div className="modal-footer" style={{ display: "flex", gap: "10px" }}>
+              {selectedLog.paymentStatus === "PENDING" && (
+                <button
+                  className="btn-primary full-width"
+                  style={{ backgroundColor: "#28a745" }}
+                  onClick={async () => {
+                    try {
+                      await api.post("/parking/admin/mark-paid", { sessionId: selectedLog._id });
+                      fetchLogs();
+                      setSelectedLog({ ...selectedLog, paymentStatus: "PAID", status: "completed" });
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  }}
+                >
+                  Mark as Paid
+                </button>
+              )}
               <button
                 className="btn-primary full-width"
                 onClick={() => setSelectedLog(null)}

@@ -23,6 +23,11 @@ const parkingSessionSchema = new mongoose.Schema({
     type: String,
     enum: ["PENDING", "PAID"],
     default: "PENDING"
+  },
+  paymentMethod: {
+    type: String,
+    enum: ["WALLET", "CASH"],
+    default: "WALLET"
   }
 });
 

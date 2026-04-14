@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./BillingTable.css";
-import api from "../../lib/adminApi"; 
+import api from "../../lib/adminApi";
+
+const POLL_INTERVAL = 10000;
 
 export default function BillingTable() {
   const [records, setRecords] = useState([]);
-
-  useEffect(() => {
-    fetchRecords();
-  }, []);
 
   const fetchRecords = async () => {
     try {
@@ -18,9 +16,15 @@ export default function BillingTable() {
     }
   };
 
+  useEffect(() => {
+    fetchRecords();
+    const id = setInterval(fetchRecords, POLL_INTERVAL); // ✅ poll
+    return () => clearInterval(id);
+  }, []);
+
   const markPaid = async (id) => {
     try {
-      await api.patch(`/admin/billing/${id}/mark-paid`);
+      await api.post("/parking/admin/mark-paid", { sessionId: id });
       fetchRecords();
     } catch (err) {
       console.error(err);
@@ -41,7 +45,6 @@ export default function BillingTable() {
       <div className="card-header">
         <h3>Billing Records</h3>
       </div>
-
       <table className="billing-table">
         <thead>
           <tr>
@@ -54,23 +57,16 @@ export default function BillingTable() {
             <th>Action</th>
           </tr>
         </thead>
-
         <tbody>
           {records.map((r) => (
             <tr key={r._id}>
               <td>{r.vehicleNumber}</td>
               <td>{new Date(r.entryTime).toLocaleString()}</td>
-              <td>
-                {r.exitTime ? new Date(r.exitTime).toLocaleString() : "--"}
-              </td>
+              <td>{r.exitTime ? new Date(r.exitTime).toLocaleString() : "--"}</td>
               <td>{formatDuration(r.entryTime, r.exitTime)}</td>
-              <td>₹{r.billAmount}</td>
+              <td>{r.billAmount != null ? `₹${r.billAmount}` : "--"}</td>
               <td>
-                <span
-                  className={`status ${
-                    r.paymentStatus === "PAID" ? "paid" : "pending"
-                  }`}
-                >
+                <span className={`status ${r.paymentStatus === "PAID" ? "paid" : "pending"}`}>
                   {r.paymentStatus}
                 </span>
               </td>
@@ -79,9 +75,7 @@ export default function BillingTable() {
                   <button className="mark-paid" onClick={() => markPaid(r._id)}>
                     Mark Paid
                   </button>
-                ) : (
-                  "—"
-                )}
+                ) : "—"}
               </td>
             </tr>
           ))}

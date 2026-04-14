@@ -9,8 +9,11 @@ export default function RecentActivity() {
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
 
+  // replace the existing useEffect with:
   useEffect(() => {
     fetchLogs();
+    const id = setInterval(fetchLogs, 10000); // ✅ poll
+    return () => clearInterval(id);
   }, []);
 
   const fetchLogs = async () => {

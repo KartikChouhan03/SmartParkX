@@ -37,7 +37,7 @@ const Navbar = () => {
 
         <div className='navbar-right'>
           
-          <button onClick={()=>navigate('/login')} className='login-btn'>Login</button>
+          <button onClick={() => window.location.href = 'http://localhost:5174/login'} className='login-btn'>Admin Login</button>
         </div>
       </div>
     </div>

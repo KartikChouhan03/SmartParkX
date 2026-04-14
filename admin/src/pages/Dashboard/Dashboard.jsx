@@ -15,8 +15,10 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchKpis();
-  }, []);
+  fetchKpis();
+  const id = setInterval(fetchKpis, 10000); // ✅ poll
+  return () => clearInterval(id);
+}, []);
 
   const fetchKpis = async () => {
     try {
